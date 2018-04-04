@@ -157,12 +157,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
 
           <!-- beschikbaar voor docent -->
+            <a name="docent_presentielijst" href$="[[_c_baseURL]]docent_presentielijst" verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
+                <iron-icon icon="social:group"></iron-icon>
+                <span>Presentielijst</span>
+            </a>
 
           <!-- beschikbaar voor student -->
-          <a name="student_medestudenten" href$="[[_c_baseURL]]student_medestudenten"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
+          <a name="student_medestudenten" href$="[[_c_baseURL]]student_medestudenten" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
             <span>Toon medestudenten</span>
           </a>
+
+            <a name="student_rooster" href$="[[_c_baseURL]]student_rooster" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
+                <iron-icon icon="icons:schedule"></iron-icon>
+                <span>Toon rooster</span>
+            </a>
+
+            <a name="student_afmelden" href$="[[_c_baseURL]]student_afmelden" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
+                <iron-icon icon="icons:assignment-return"></iron-icon>
+                <span>Afmelden</span>
+            </a>
 
         </iron-selector>
       </app-drawer>
@@ -249,6 +263,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 c_username="[[_username]]">
               </my-medestudenten>
             </paper-material>
+          </section>
+
+          <section page-name="student_rooster"
+                    title="Rooster"
+                    element$="my-rooster">
+              <paper-material elevation="1">
+                  <my-rooster></my-rooster>
+              </paper-material>
+          </section>
+
+          <section page-name="student_afmelden"
+                   title="Afmelden"
+                   element$="my-afmelden">
+              <paper-material elevation="1">
+                  <my-afmelden></my-afmelden>
+              </paper-material>
+          </section>
+
+          <section page-name="docent_presentielijst"
+                   title="Presentielijst"
+                   element$="my-presentielijst">
+              <paper-material elevation="1">
+                  <my-presentielijst></my-presentielijst>
+              </paper-material>
           </section>
 
           <section page-name="student_details" title="STUDENT DETAILS">

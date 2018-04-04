@@ -39,8 +39,8 @@ public class Application {
 
 		server.registerHandler("/login", loginController);
 
-  	server.registerHandler("/student/medestudenten/ophalen", medestudentenController);
-  	server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
+		server.registerHandler("/student/medestudenten/ophalen", medestudentenController);
+		server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 		
 		server.start();
 	}
