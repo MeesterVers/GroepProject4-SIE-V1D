@@ -1,2 +1,2 @@
-# GroepProject4-SIE-V1D
-Een studenten/docenten aanwezigheid rooster systeem in verband met het vak Groep Project van de HU SIE V1D
+# GP_2018_startapplicatie
+Initial application as baseline for GP Students @HU 2017-2018
