@@ -1,10 +1,12 @@
 package model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import model.klas.Klas;
 import model.persoon.Docent;
 import model.persoon.Student;
+import model.les.Les;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,6 +22,7 @@ public class PrIS {
 	private ArrayList<Docent> deDocenten;
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
+	private ArrayList<Les> rooster;
 	
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data
@@ -48,6 +51,7 @@ public class PrIS {
 		deDocenten = new ArrayList<Docent>();
 		deStudenten = new ArrayList<Student>();
 		deKlassen = new ArrayList<Klas>();
+		rooster = new ArrayList<Les>();
 
 		// Inladen klassen
 		vulKlassen(deKlassen);
@@ -57,6 +61,9 @@ public class PrIS {
 
 		// Inladen docenten
 		vulDocenten(deDocenten);
+		vulRooster(rooster);
+
+		System.out.println(rooster);
 	
 	} //Einde Pris constructor
 	
@@ -221,7 +228,8 @@ public class PrIS {
 		pKlassen.add(k4);
 		pKlassen.add(k5);
 		pKlassen.add(k6);
-	}	
+	}
+
 	private void vulStudenten(
 			ArrayList<Student> pStudenten,
 			ArrayList<Klas> pKlassen) {
@@ -268,7 +276,40 @@ public class PrIS {
 			}	
 			
 		}
-	}	
+	}
+
+	private void vulRooster(ArrayList<Les> rooster) {
+        String csvFile = "././CSV/rooster.csv";
+        BufferedReader br = null;
+        String line;
+        String cvsSplitBy = ",";
+
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] element = line.split(cvsSplitBy);
+                Les l = new Les(element[0], element[1], element[2], element[3], element[4], element[5], element[6]);
+                rooster.add(l);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public ArrayList<Les> getRooster() {
+	    return rooster;
+    }
 
 
 }
