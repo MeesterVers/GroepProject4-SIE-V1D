@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jsonfileserver-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jsonfileserver-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
