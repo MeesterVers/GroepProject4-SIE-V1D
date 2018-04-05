@@ -23,6 +23,7 @@ public class PrIS {
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
 	private ArrayList<Les> rooster;
+
 	
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data

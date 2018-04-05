@@ -12,7 +12,18 @@
      bij start van de applicatie.
 -->
 
+
+
 <dom-module id="my-rooster">
+
+    <iron-ajax
+            id="rooster_ophalen"
+            method="POST"
+            url="/student/rooster"
+            handle-as="json"
+            on-response="_rooster_ophalen_response_handler">
+    </iron-ajax>
+
     <template>
         <style>
 
@@ -32,6 +43,30 @@
                 is: 'my-rooster',
 
                 properties: {
+                    c_rooster: {
+                        type: Array
+                    },
+                    c_username: {
+                        type: String
+                    }
+                },
+
+                _initializing : function() {
+                    this.$._rooster_ophalen_request_handler();
+                },
+
+                _rooster_ophalen_request_handler: function() {
+                    console.log(this.c_username);
+                    this.$.rooster_ophalen.contentType="application/json";
+                    this.$.rooster_ophalen.body={
+                        "username": this.c_username
+                    };
+                    this.$.rooster_ophalen.generateRequest();
+                },
+
+                _rooster_ophalen_response_handler: function(request) {
+                    console.log(request.detail.response.length);
+                    this._c_rooster = request.detail.response;
                 }
 
             });

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="GP_2018_startapplicatie-master/src"/>
+	<classpathentry kind="lib" path="GP_2018_startapplicatie-master/lib/jsonfileserver-1.0.jar"/>
+	<classpathentry kind="output" path="GP_2018_startapplicatie-master/out/production/GP_2018_startapplicatie-master"/>
+</classpath>
