@@ -3,6 +3,10 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
@@ -15,18 +19,34 @@
 
 <dom-module id="my-afmelden">
     <template>
-        <style>
 
+        <iron-ajax
+                id="rooster_ophalen"
+                method="POST"
+                url="/student/rooster"
+                handle-as="json"
+                on-response="_rooster_ophalen_response_handler">
+        </iron-ajax>
+        <style>
+            form {
+                width: 250px;
+            }
+            select {
+                width: 250px;
+                margin: 10px;
+            }
         </style>
         <h1>Afmelden:</h1>
         <form>
-            <input placeholder="les" list="lessen" name="les">
-            <datalist id="lessen">
-                <option value="AUI">
-                <option value="OODC">
-                <option value="ICOR">
-                <option value="Moddeling">
-            </datalist>
+            <select name="soort"required>
+                <option value="" hidden>Soort</option>
+                <option>Ziek</option>
+                <option>Afwezig</option>
+                <option>Te laat</option>
+            </select>
+            <select name="les"required>
+                <option value="" hidden>les</option>
+            </select>
         </form>
     </template>
 
@@ -42,6 +62,37 @@
                 is: 'my-afmelden',
 
                 properties: {
+                    c_rooster: {
+                        type: Array
+                    },
+                    c_rol: {
+                        type: String
+                    },
+                    c_visible: {
+                        type: Boolean,
+                        value: false,
+                        observer: '_rooster_ophalen_request_handler',
+                    },
+                    c_username: {
+                        type: String
+                    }
+                },
+
+                _rooster_ophalen_request_handler: function() {
+                    if (this.c_visible) {
+                        if (this.c_rol=="student") {
+                            this.$.rooster_ophalen.contentType="application/json";
+                            this.$.rooster_ophalen.body={
+                                "username": this.c_username
+                            };
+                            this.$.rooster_ophalen.generateRequest();
+                        }
+                    }
+                },
+
+                _rooster_ophalen_response_handler: function(request) {
+                    this.c_rooster = request.detail.response;
+                    console.log(this.c_rooster);
                 }
 
             });

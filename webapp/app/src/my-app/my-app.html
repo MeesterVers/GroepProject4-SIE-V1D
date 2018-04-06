@@ -281,7 +281,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    title="Afmelden"
                    element$="my-afmelden">
               <paper-material elevation="1">
-                  <my-afmelden></my-afmelden>
+                  <my-afmelden
+                          c_username="[[_username]]"
+                         c_rol="[[_rol]]"
+                         c_visible="[[_are_strings_equal(_ar_page, 'student_afmelden')]]">
+                  </my-afmelden>
               </paper-material>
           </section>
 
