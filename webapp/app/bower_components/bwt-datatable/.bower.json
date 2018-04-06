@@ -57,5 +57,10 @@
   },
   "_source": "https://github.com/bluewatertracks/bwt-datatable.git",
   "_target": "^2.1.0",
+<<<<<<< HEAD
   "_originalSource": "bwt-datatable"
+=======
+  "_originalSource": "bwt-datatable",
+  "_direct": true
+>>>>>>> 4a78040d5e3913215e2d178f146d226d69819f2a
 }

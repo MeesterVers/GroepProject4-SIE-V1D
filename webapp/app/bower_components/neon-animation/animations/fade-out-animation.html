@@ -13,6 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!--
 `<fade-out-animation>` animates the opacity of an element from 1 to 0.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a78040d5e3913215e2d178f146d226d69819f2a
 Configuration:
 ```
 {
@@ -24,11 +28,23 @@ Configuration:
 -->
 
 <script>
+<<<<<<< HEAD
   Polymer({
     is: 'fade-out-animation',
     behaviors: [
       Polymer.NeonAnimationBehavior
     ],
+=======
+
+  Polymer({
+
+    is: 'fade-out-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+>>>>>>> 4a78040d5e3913215e2d178f146d226d69819f2a
     configure: function(config) {
       var node = config.node;
       this._effect = new KeyframeEffect(node, [
@@ -37,5 +53,12 @@ Configuration:
       ], this.timingFromConfig(config));
       return this._effect;
     }
+<<<<<<< HEAD
   });
 </script>
+=======
+
+  });
+
+</script>
+>>>>>>> 4a78040d5e3913215e2d178f146d226d69819f2a
