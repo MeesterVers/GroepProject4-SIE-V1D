@@ -269,7 +269,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     title="Rooster"
                     element$="my-rooster">
               <paper-material elevation="1">
-                  <my-rooster></my-rooster>
+                  <my-rooster
+                          c_username="[[_username]]"
+                          c_rol="[[_rol]]"
+                          c_visible="[[_are_strings_equal(_ar_page, 'student_rooster')]]">
+                  </my-rooster>
               </paper-material>
           </section>
 
