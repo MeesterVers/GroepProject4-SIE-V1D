@@ -29,14 +29,15 @@
         </iron-ajax>
 
         <h1>Rooster</h1>
-        <!--<template is="dom-repeat" items="{{c_rooster}}">-->
-            <!--<div>{{item.datum}} {{item.startTijd}} {{item.eindTijd}} {{item.vakCode}} {{item.docent}} {{item.klasCode}}</div>-->
-        <!--</template>-->
 
-        <paper-datatable data="{{c_rooster}}" selectable multi-selection>
-            <paper-datatable-column header="Datum" property="datum" sortable>
-            </paper-datatable-column>
-        </paper-datatable>
+        <!--<paper-datatable data="{{c_rooster}}" selectable multi-selection>-->
+
+            <!--<paper-datatable-column header="{{}}" property="title" sortable>-->
+                <!--<template>-->
+                    <!--<paper-input value="{{value}}">-->
+                <!--</template>-->
+            <!--</paper-datatable-column>-->
+        <!--</paper-datatable>-->
 
         <style>
 
@@ -85,6 +86,15 @@
 
                 _rooster_ophalen_response_handler: function(request) {
                     this.c_rooster = request.detail.response;
+                    var dagen = {};
+                    this.c_rooster.forEach(function(les) {
+                        if (les.datum in dagen) {
+                            dagen[les.datum].push(les);
+                        } else {
+                            dagen[les.datum] = [les];
+                        }
+                    });
+                    this.c_rooster = dagen;
                     console.log(this.c_rooster);
                 }
 
