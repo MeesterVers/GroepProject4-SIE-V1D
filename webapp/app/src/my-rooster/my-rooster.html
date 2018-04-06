@@ -30,14 +30,15 @@
 
         <h1>Rooster</h1>
 
-        <!--<paper-datatable data="{{c_rooster}}" selectable multi-selection>-->
+        <template is="dom-repeat" items="{{_toArray(c_rooster)}}">
+            <h2>{{item.name}}</h2>
+            <template is="dom-repeat" items="{{item.value}}">
+                <div>{{item.startTijd}}</div>
+            </template>
+        </template>
 
-            <!--<paper-datatable-column header="{{}}" property="title" sortable>-->
-                <!--<template>-->
-                    <!--<paper-input value="{{value}}">-->
-                <!--</template>-->
-            <!--</paper-datatable-column>-->
-        <!--</paper-datatable>-->
+
+
 
         <style>
 
@@ -72,6 +73,15 @@
                     }
                 },
 
+                _toArray: function(obj) {
+                    return Object.keys(obj).map(function(key) {
+                        return {
+                            name: key,
+                            value: obj[key]
+                        };
+                    });
+                },
+
                 _rooster_ophalen_request_handler: function() {
                     if (this.c_visible) {
                         if (this.c_rol=="student") {
@@ -95,7 +105,6 @@
                         }
                     });
                     this.c_rooster = dagen;
-                    console.log(this.c_rooster);
                 }
 
             });
