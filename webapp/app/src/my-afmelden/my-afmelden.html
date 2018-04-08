@@ -29,16 +29,22 @@
         </iron-ajax>
         <style>
             form {
-                width: 250px;
+                width: 300px;
             }
-            select {
+            select, input, textarea {
                 width: 250px;
                 margin: 10px;
+            }
+            input[type=date] {
+                width: 110px !important;
+            }
+            .date {
+                display: inline-block;
             }
         </style>
         <h1>Afmelden:</h1>
         <form>
-            <select name="soort"required>
+            <select id="soort" name="soort"  on-value-changed="_onSoortChanged" required>
                 <option value="" hidden>Soort</option>
                 <option>Ziek</option>
                 <option>Afwezig</option>
@@ -46,10 +52,21 @@
             </select>
             <select name="les"required>
                 <option value="" hidden>les</option>
+                <template is="dom-repeat" items="{{c_rooster}}">
+                    <option value="{{item.vakCode}}-{{item.datum}}">{{item.vakCode}} ({{item.datum}})</option>
+                </template>
             </select>
+            <div class="date">
+                <input type="date" id="date_1">
+            </div>
+            <div class="date">
+                <input type="date" id="date_2">
+            </div>
+            <textarea></textarea>
         </form>
     </template>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         (function() {
             'use strict';
@@ -93,9 +110,18 @@
                 _rooster_ophalen_response_handler: function(request) {
                     this.c_rooster = request.detail.response;
                     console.log(this.c_rooster);
+                },
+
+                _onSoortChanged: function (request) {
+                    console.log(request.detail.value);
+                    if(request.detail.value == 'Te laat'){
+                        $("input").prop('disabled', true);
+                        $(h1).css("font-size", "128px");
+                    }
                 }
 
             });
         })();
+
     </script>
 </dom-module>
