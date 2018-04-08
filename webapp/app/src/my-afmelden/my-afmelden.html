@@ -27,6 +27,7 @@
                 handle-as="json"
                 on-response="_rooster_ophalen_response_handler">
         </iron-ajax>
+
         <style>
             form {
                 width: 300px;
@@ -44,23 +45,23 @@
         </style>
         <h1>Afmelden:</h1>
         <form>
-            <select id="soort" name="soort"  on-value-changed="_onSoortChanged" required>
+            <select id="soort" name="soort" value="{{soort::change}}" required>
                 <option value="" hidden>Soort</option>
                 <option>Ziek</option>
                 <option>Afwezig</option>
                 <option>Te laat</option>
             </select>
-            <select name="les"required>
+            <select name="les" value="{{les}}" required>
                 <option value="" hidden>les</option>
                 <template is="dom-repeat" items="{{c_rooster}}">
                     <option value="{{item.vakCode}}-{{item.datum}}">{{item.vakCode}} ({{item.datum}})</option>
                 </template>
             </select>
             <div class="date">
-                <input type="date" id="date_1">
+                <input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}">
             </div>
             <div class="date">
-                <input type="date" id="date_2">
+                <input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}">
             </div>
             <textarea></textarea>
         </form>
@@ -88,10 +89,21 @@
                     c_visible: {
                         type: Boolean,
                         value: false,
-                        observer: '_rooster_ophalen_request_handler',
+                        observer: '_rooster_ophalen_request_handler'
                     },
                     c_username: {
                         type: String
+                    },
+                    soort: {
+                        type: String,
+                        observer: '_soortChanged'
+                    },
+                    eindDatum: String,
+                    startDatum: String,
+                    les: String,
+                    periode: {
+                        type: Boolean,
+                        value: false
                     }
                 },
 
@@ -112,11 +124,11 @@
                     console.log(this.c_rooster);
                 },
 
-                _onSoortChanged: function (request) {
-                    console.log(request.detail.value);
-                    if(request.detail.value == 'Te laat'){
-                        $("input").prop('disabled', true);
-                        $(h1).css("font-size", "128px");
+                _soortChanged: function() {
+                    if (this.soort == "Te laat" || this.soort == "Ziek") {
+                        this.periode = true;
+                    } else {
+                        this.periode = false;
                     }
                 }
 
