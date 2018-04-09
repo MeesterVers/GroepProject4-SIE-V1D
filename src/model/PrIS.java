@@ -312,5 +312,15 @@ public class PrIS {
 	    return rooster;
     }
 
+    public Klas getKlasviacode(String klascode) {
+		for (Klas k: deKlassen) {
+			if(k.getKlasCode() .equals(klascode)) {
+				return k;
+			}
+		}
+		return null;
+	}
+
+
 
 }
