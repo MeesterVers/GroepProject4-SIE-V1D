@@ -31,20 +31,69 @@
         <style>
             form {
                 width: 300px;
+                background-color: #fff;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+                padding: 35px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
             }
+
+            input[type=text],
+            input[type=date],
+            input[type=datetime],
+            input[type=number],
+            input[type=search],
+            input[type=time],
+            input[type=url],
+            input[type=email],
+            textarea,
+            select{
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                border:1px solid #BEBEBE;
+                padding: 7px;
+                outline: none;
+            }
+
             select, input, textarea {
                 width: 250px;
                 margin: 10px;
             }
-            input[type=date] {
-                width: 110px !important;
+
+            p {
+                margin: 10px;
+                margin-bottom: 0;
+                margin-top: 0;
+                text-align: left !important;
             }
+
+            input[type=button] {
+                background: #1a9fd9;
+                padding: 8px 15px 8px 15px;
+                border: none;
+                color: #fff;
+                transition: 0.2s;
+            }
+
+            input[type=button]:hover {
+                background: #1786b7;
+                transition: 0.2s;
+            }
+
+            textarea {
+                resize: none;
+            }
+
             .date {
                 display: inline-block;
             }
         </style>
-        <h1>Afmelden:</h1>
         <form>
+            <h1>Afmelden:</h1>
             <select id="soort" name="soort" value="{{soort::change}}" required>
                 <option value="" hidden>Soort</option>
                 <option>Ziek</option>
@@ -58,12 +107,15 @@
                 </template>
             </select>
             <div class="date">
+                <p>begindatum:</p>
                 <input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}">
             </div>
             <div class="date">
+                <p>einddatum:</p>
                 <input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}">
             </div>
-            <textarea></textarea>
+            <textarea placeholder="Reden"></textarea>
+            <input type="button" value="Bevestig">
         </form>
     </template>
 
