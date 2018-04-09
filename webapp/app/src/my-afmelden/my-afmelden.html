@@ -27,29 +27,47 @@
                 handle-as="json"
                 on-response="_rooster_ophalen_response_handler">
         </iron-ajax>
+
         <style>
             form {
-                width: 250px;
+                width: 300px;
             }
-            select {
+            select, input, textarea {
                 width: 250px;
                 margin: 10px;
+            }
+            input[type=date] {
+                width: 110px !important;
+            }
+            .date {
+                display: inline-block;
             }
         </style>
         <h1>Afmelden:</h1>
         <form>
-            <select name="soort"required>
+            <select id="soort" name="soort" value="{{soort::change}}" required>
                 <option value="" hidden>Soort</option>
                 <option>Ziek</option>
                 <option>Afwezig</option>
                 <option>Te laat</option>
             </select>
-            <select name="les"required>
+            <select name="les" value="{{les}}" required>
                 <option value="" hidden>les</option>
+                <template is="dom-repeat" items="{{c_rooster}}">
+                    <option value="{{item.vakCode}}-{{item.datum}}">{{item.vakCode}} ({{item.datum}})</option>
+                </template>
             </select>
+            <div class="date">
+                <input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}">
+            </div>
+            <div class="date">
+                <input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}">
+            </div>
+            <textarea></textarea>
         </form>
     </template>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         (function() {
             'use strict';
@@ -71,10 +89,21 @@
                     c_visible: {
                         type: Boolean,
                         value: false,
-                        observer: '_rooster_ophalen_request_handler',
+                        observer: '_rooster_ophalen_request_handler'
                     },
                     c_username: {
                         type: String
+                    },
+                    soort: {
+                        type: String,
+                        observer: '_soortChanged'
+                    },
+                    eindDatum: String,
+                    startDatum: String,
+                    les: String,
+                    periode: {
+                        type: Boolean,
+                        value: false
                     }
                 },
 
@@ -93,9 +122,18 @@
                 _rooster_ophalen_response_handler: function(request) {
                     this.c_rooster = request.detail.response;
                     console.log(this.c_rooster);
+                },
+
+                _soortChanged: function() {
+                    if (this.soort == "Te laat" || this.soort == "Ziek") {
+                        this.periode = true;
+                    } else {
+                        this.periode = false;
+                    }
                 }
 
             });
         })();
+
     </script>
 </dom-module>
