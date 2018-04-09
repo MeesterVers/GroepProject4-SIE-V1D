@@ -1,5 +1,8 @@
 package model.les;
 
+import model.afwezigheid.Afwezigheid;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Les {
@@ -10,6 +13,7 @@ public class Les {
     private String docent;
     private String lokaal;
     private String klasCode;
+    private ArrayList<Afwezigheid> afwezigheden = new ArrayList<Afwezigheid>();
 
     public Les(String datum, String startTijd, String eindTijd, String vakCode, String docent, String lokaal, String klasCode) {
         this.datum = datum;
@@ -19,6 +23,14 @@ public class Les {
         this.docent = docent;
         this.lokaal = lokaal;
         this.klasCode = klasCode;
+    }
+
+    public void voegAfwezigheidToe(Afwezigheid afw) {
+        afwezigheden.add(afw);
+    }
+
+    public ArrayList<Afwezigheid> getAfwezigheden() {
+        return afwezigheden;
     }
 
     public String getKlasCode() {

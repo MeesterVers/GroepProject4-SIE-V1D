@@ -28,6 +28,14 @@
                 on-response="_rooster_ophalen_response_handler">
         </iron-ajax>
 
+        <iron-ajax
+                id="afmelden_opslaan"
+                method="POST"
+                url="/student/afmelden"
+                handle-as="json"
+                on-response="_afwezigheid_opslaan_response_handler">
+        </iron-ajax>
+
         <style>
             form {
                 width: 300px;
@@ -51,19 +59,20 @@
                 <option>Afwezig</option>
                 <option>Te laat</option>
             </select>
-            <select name="les" value="{{les}}" required>
+            <select name="les" value="{{les::change}}" required>
                 <option value="" hidden>les</option>
                 <template is="dom-repeat" items="{{c_rooster}}">
-                    <option value="{{item.vakCode}}-{{item.datum}}">{{item.vakCode}} ({{item.datum}})</option>
+                    <option value="[[item.vakCode]].[[item.datum]]">{{item.vakCode}} ({{item.datum}})</option>
                 </template>
             </select>
             <div class="date">
-                <input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}">
+                <paper-input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}"></paper-input>
             </div>
             <div class="date">
-                <input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}">
+                <paper-input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}"></paper-input>
             </div>
-            <textarea></textarea>
+            <paper-input type="text" value="{{comment}}"></paper-input>
+            <paper-button type="submit" on-click="_submitHandler">Submit</paper-button>
         </form>
     </template>
 
@@ -100,7 +109,11 @@
                     },
                     eindDatum: String,
                     startDatum: String,
-                    les: String,
+                    les: {
+                        type: String,
+                        observer: '_lesChanged'
+                    },
+                    comment: String,
                     periode: {
                         type: Boolean,
                         value: false
@@ -130,6 +143,30 @@
                     } else {
                         this.periode = false;
                     }
+                },
+
+                _lesChanged: function() {
+                    console.log("hi");
+                },
+
+                _submitHandler: function() {
+                    console.log(this.les);
+                    this.$.afmelden_opslaan.contentType="application/json";
+                    this.$.afmelden_opslaan.body={
+                        "username": this.c_username,
+                        "beschrijving": this.comment,
+                        "soort": this.soort,
+                        "les": this.les,
+                        "startDatum": this.startDatum,
+                        "eindDatum": this.eindDatum,
+                    };
+                    console.log(this.$.afmelden_opslaan.body);
+                    this.$.afmelden_opslaan.generateRequest();
+                },
+
+
+                _afwezigheid_opslaan_response_handler: function(request) {
+                    console.log("succesvol")
                 }
 
             });
