@@ -20,14 +20,7 @@ import server.Handler;
 public class RoosterController implements Handler {
     private PrIS informatieSysteem;
 
-    /**
-     * De StudentController klasse moet alle student-gerelateerde aanvragen
-     * afhandelen. Methode handle() kijkt welke URI is opgevraagd en laat
-     * dan de juiste methode het werk doen. Je kunt voor elke nieuwe URI
-     * een nieuwe methode schrijven.
-     *
-     * @param infoSys - het toegangspunt tot het domeinmodel
-     */
+
     public RoosterController(PrIS infoSys) {
         informatieSysteem = infoSys;
     }
