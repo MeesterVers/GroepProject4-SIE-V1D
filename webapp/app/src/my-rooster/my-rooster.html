@@ -116,23 +116,25 @@
                     var weekdag = toendag.getDay();
                     var beginweek = 0;
                     var eindweek = 7;
-                    console.log(datum.name);
-                    console.log(toendag);
-                    console.log(nudag);
                     for(weekdag => beginweek;weekdag--;){
                         nudag.setDate(nudag.getDate() - weekdag);
-                        if(nudag == toendag){
+                        if(nudag.getTime() === toendag.getTime()){
+                          console.log("nudag:"+nudag+"\n"+
+                                      "toendag:"+toendag+"\n"+
+                                      "weekdag:"+ weekdag);
                         return true;
-                        console.log("true");
+
 
                         }
                         console.log("for loop");
                     }
                     for(weekdag < eindweek; weekdag++;){
+
                         nudag.setDate(nudag.getDate() + weekdag);
-                        if(nudag == toendag){
+                        if(nudag.getTime() === toendag.getTime()){
+                         console.log("true");
                         return true;
-                        console.log("true");
+
                         }
                         console.log("for loop");
                     }
