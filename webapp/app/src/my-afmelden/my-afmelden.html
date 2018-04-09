@@ -116,13 +116,14 @@
             </select>
             <div class="date">
                 <p>begindatum: </p>
-                <input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}">
+                <paper-input type="date" id="date_1" value="{{startDatum}}" disabled$="{{periode}}"></paper-input>
             </div>
             <div class="date">
                 <p>einddatum: </p>
-                <input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}">
+                <paper-input type="date" id="date_2" value="{{eindDatum}}" disabled$="{{periode}}"></paper-input>
             </div>
-            <textarea></textarea>
+            <paper-input type="text" value="{{comment}}"></paper-input>
+            <paper-button type="submit" on-click="_submitHandler">Submit</paper-button>
         </form>
     </template>
 
