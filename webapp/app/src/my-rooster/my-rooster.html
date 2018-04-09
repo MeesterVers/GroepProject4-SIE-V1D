@@ -105,7 +105,40 @@
                         }
                     });
                     this.c_rooster = dagen;
-                    console.log(this.c_rooster);
+                },
+
+
+                _isdag(datum){
+                    var nudag = new Date("2018-4-10");
+                    nudag.setHours(0,0,0,0);
+                    var toendag = new Date(datum.name);
+                    toendag.setHours(0,0,0,0);
+                    var weekdag = toendag.getDay();
+                    var beginweek = 0;
+                    var eindweek = 7;
+                    for(weekdag => beginweek;weekdag--;){
+                        nudag.setDate(nudag.getDate() - weekdag);
+                        if(nudag.getTime() === toendag.getTime()){
+                          console.log("nudag:"+nudag+"\n"+
+                                      "toendag:"+toendag+"\n"+
+                                      "weekdag:"+ weekdag);
+                        return true;
+
+
+                        }
+                        console.log("for loop");
+                    }
+                    for(weekdag < eindweek; weekdag++;){
+
+                        nudag.setDate(nudag.getDate() + weekdag);
+                        if(nudag.getTime() === toendag.getTime()){
+                         console.log("true");
+                        return true;
+
+                        }
+                        console.log("for loop");
+                    }
+
                 }
 
             });
