@@ -3,6 +3,7 @@ package model;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import model.afwezigheid.Afwezigheid;
 import model.klas.Klas;
 import model.persoon.Docent;
 import model.persoon.Student;
@@ -23,6 +24,7 @@ public class PrIS {
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
 	private ArrayList<Les> rooster;
+	private ArrayList<Afwezigheid> periodeAfwezigheden;
 
 	
 	/**
@@ -53,6 +55,7 @@ public class PrIS {
 		deStudenten = new ArrayList<Student>();
 		deKlassen = new ArrayList<Klas>();
 		rooster = new ArrayList<Les>();
+		periodeAfwezigheden = new ArrayList<Afwezigheid>();
 
 		// Inladen klassen
 		vulKlassen(deKlassen);
@@ -64,8 +67,6 @@ public class PrIS {
 		vulDocenten(deDocenten);
 		vulRooster(rooster);
 
-		System.out.println(rooster);
-	
 	} //Einde Pris constructor
 	
 	//deze method is static onderdeel van PrIS omdat hij als hulp methode 
@@ -312,5 +313,11 @@ public class PrIS {
 	    return rooster;
     }
 
+    public void voegPeriodeAfwezigheidToe(Afwezigheid afw) {
+	    periodeAfwezigheden.add(afw);
+    }
 
+    public ArrayList<Afwezigheid> getPeriodeAfwezigheden() {
+	    return periodeAfwezigheden;
+    }
 }
