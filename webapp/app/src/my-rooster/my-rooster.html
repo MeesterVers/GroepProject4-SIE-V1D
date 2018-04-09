@@ -109,34 +109,28 @@
 
 
                 _isdag(datum){
-                    var nudag = new Date("2018-4-10");
+
+                    var nudag = new Date();
                     nudag.setHours(0,0,0,0);
                     var toendag = new Date(datum.name);
                     toendag.setHours(0,0,0,0);
-                    var weekdag = toendag.getDay();
+                    var weekdag = nudag.getDay();
                     var beginweek = 0;
                     var eindweek = 7;
-                    for(weekdag => beginweek;weekdag--;){
-                        nudag.setDate(nudag.getDate() - weekdag);
-                        if(nudag.getTime() === toendag.getTime()){
-                          console.log("nudag:"+nudag+"\n"+
-                                      "toendag:"+toendag+"\n"+
-                                      "weekdag:"+ weekdag);
+                    var changedate = new Date(nudag);
+                    changedate.setHours(0,0,0,0);
+                    for(weekdag >= beginweek;weekdag--;){
+                        changedate.setDate(nudag.getDate() - weekdag);
+                        if(changedate.getTime() === toendag.getTime()){
                         return true;
-
-
                         }
-                        console.log("for loop");
                     }
-                    for(weekdag < eindweek; weekdag++;){
-
-                        nudag.setDate(nudag.getDate() + weekdag);
-                        if(nudag.getTime() === toendag.getTime()){
-                         console.log("true");
+                    for(weekdag = toendag.getDay();weekdag < eindweek; weekdag++){
+                         changedate.setDate(nudag.getDate() + weekdag - nudag.getDay());
+                        if(changedate.getTime() === toendag.getTime()){
                         return true;
 
                         }
-                        console.log("for loop");
                     }
 
                 }
