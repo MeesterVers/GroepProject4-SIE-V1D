@@ -49,6 +49,19 @@
                 outline: none;
             }
 
+            input[type=button] {
+                background: #1a9fd9;
+                padding: 8px 15px 8px 15px;
+                border: none;
+                color: #fff;
+                transition: 0.2s;
+            }
+
+            input[type=button]:hover {
+                background: #1786b7;
+                transition: 0.2s;
+            }
+
             select, input, textarea {
                 width: 250px;
                 margin: 10px;
@@ -61,6 +74,7 @@
                 <option value="[[item.vakCode]].[[item.datum]]">{{item.vakCode}} ({{item.datum}})</option>
             </template>
         </select>
+        <paper-button type="submit" on-click="_submitHandler">Submit</paper-button>
     </template>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -106,6 +120,17 @@
                 _rooster_ophalen_response_handler: function(request) {
                     this.c_rooster = request.detail.response;
                     console.log(this.c_rooster);
+                },
+
+               _submitHandler: function() {
+                    console.log(this.les);
+                    this.$.leerlingen_ophalen.contentType="application/json";
+                    console.log(this.les);
+                    this.$.leerlingen_ophalen.body={
+                        "les": this.les
+                    };
+                    console.log(this.$.leerlingen_ophalen.body);
+                    this.$.leerlingen_ophalen.generateRequest();
                 }
 
             });
