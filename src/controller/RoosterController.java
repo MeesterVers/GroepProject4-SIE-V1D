@@ -64,7 +64,6 @@ public class RoosterController implements Handler {
             }
             String lJsonOutStr = lJsonArrayBuilder.build().toString();
             conversation.sendJSONMessage(lJsonOutStr);
-            System.out.println(lDocentZelf.getGebruikersnaam());
         } else {
             String lGroepIdZelf = lStudentZelf.getGroepId();
 

@@ -71,7 +71,7 @@
         <select name="les" value="{{les::change}}" required>
             <option value="" hidden>les</option>
             <template is="dom-repeat" items="{{c_rooster}}">
-                <option value="[[item.vakCode]].[[item.datum]]">{{item.vakCode}} ({{item.datum}})</option>
+                <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]]">{{item.vakCode}} ({{item.datum}})</option>
             </template>
         </select>
         <paper-button type="submit" on-click="_submitHandler">Submit</paper-button>
@@ -102,11 +102,13 @@
                     },
                     c_username: {
                         type: String
+                    },
+                    les: {
+                        type: Object
                     }
                 },
 
                 _rooster_ophalen_request_handler: function() {
-                    console.log("in");
                     if (this.c_visible) {
                         if (this.c_rol=="docent") {
                             this.$.rooster_ophalen.contentType="application/json";
@@ -119,18 +121,20 @@
                 },
                 _rooster_ophalen_response_handler: function(request) {
                     this.c_rooster = request.detail.response;
-                    console.log(this.c_rooster);
                 },
 
                _submitHandler: function() {
-                    console.log(this.les);
                     this.$.leerlingen_ophalen.contentType="application/json";
-                    console.log(this.les);
                     this.$.leerlingen_ophalen.body={
-                        "les": this.les
+                        "les": this.les,
+                        "username": this.c_username
                     };
-                    console.log(this.$.leerlingen_ophalen.body);
                     this.$.leerlingen_ophalen.generateRequest();
+                },
+
+                _leerlingen_ophalen_response_handler: function(request) {
+                    this.les = request.detail.response;
+                    console.log(this.les);
                 }
 
             });
