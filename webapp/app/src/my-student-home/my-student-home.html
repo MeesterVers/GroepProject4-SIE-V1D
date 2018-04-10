@@ -1,79 +1,56 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
-<link rel="import" href="shared-styles.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<dom-module id="my-betaling">
-    <template>
-        <style include="shared-styles">
-        * {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .center {
-            margin: auto;
-            width: 50%;
-            padding: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            text-align: center;
-        }
-
-        #test {
-            width: 200px;
-            margin: auto;
-        }
-
-        paper-button {
-            background-color: #0091ED;
-            color: white;
-            text-transform:initial;
-            margin-top: .5em;
-        }
-
-        paper-progress.slow {
-            --paper-progress-indeterminate-cycle-duration: 7s;
-        }
-    </style>
-    <div class="card">
-        <div class="center">
-            <h1>Totaalbedrag</h1>
-            <h1>[[totP]]</h1>
-            <h1>Betaling in behandeling</h1>
-            <div id="test">
-                <paper-progress indeterminate class="slow yellow" value="0" secondary-progress="100"></paper-progress>
-            </div>
-            <br>
-            <paper-button on-click="afbreekHandler">afbreken
-            </paper-button>
-            <paper-button on-click="betalenHandler">betalen</paper-button>
-        </div>
-    </div>
+<dom-module id="my-student-home">
+  <template>
+    <style>
+    :root {
+      --paper-input-container-focus-color: #1a9fd9;
+    }
+    :host {
+      display: block;
+    }
+  </style>
+  <div class="card">
+    <p>Student</p>
+    <p>[[_rol]]</p>
+  </div>
 </template>
 
 <script>
-    class MyBetaling extends Polymer.Element {
-        static get is() { return 'my-betaling'; }
-        static get properties() {
-            return {
-                totP: String
-            };
-        }
+  (function() {
+    'use strict';
+    
+    Polymer({
+      is: 'my-student-home',
 
-        constructor() {
-            super();
-            this.totP = "€"+sessionStorage.getItem("totaalPrijs");
-        }
-        afbreekHandler() {
-            if (confirm("betaling afbreken?")) {
-                window.location = "betalingAnnuleren";
+      properties: {
+        _c_studenten: {
+          type: Array,           
+        },
+
+        c_rol: {
+          type: String,
+        },
+        c_username: {
+          type: String,
+        },
+        
+        c_visible: {
+          type: Boolean,                                     
+          value: false,
+          observer: '_initializing',                          
+        },
+      },
+
+      _initializing : function() {
+          if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+            if (this.c_rol=="student") {                        // voor studenten
+              console.log("student home");
             }
-        }
-        betalenHandler() {
-            if (confirm("betalen?")) {
-                window.location = "betalingGereed";
-            }
-        }
-    }
-    window.customElements.define(MyBetaling.is, MyBetaling);
+          }
+        },
+
+      });
+  })();
 </script>
 </dom-module>

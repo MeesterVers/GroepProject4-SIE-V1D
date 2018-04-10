@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="my-docent-home">
+    <template>
+        <style>
+        :root {
+            --paper-input-container-focus-color: #1a9fd9;
+        }
+        :host {
+            display: block;
+        }
+    </style>
+    <div class="card">
+        <p>Docent</p>
+        <p>[[_rol]]</p>
+      </div>
+</template>
+
+ <script>
+    (function() {
+      'use strict';
+    
+      Polymer({
+        is: 'my-docent-home',
+
+        properties: {
+          _c_studenten: {
+            type: Array,           
+          },
+
+          c_rol: {
+            type: String,
+          },
+          c_username: {
+            type: String,
+          },
+          
+          c_visible: {
+            type: Boolean,                                     
+            value: false,
+            observer: '_initializing',                          
+          },
+        },
+
+        _initializing : function() {
+          if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+            if (this.c_rol=="docent") {                        // voor studenten
+              console.log("docent home");
+            }
+          }
+        },
+
+      });
+    })();
+  </script>
+</dom-module>

@@ -135,16 +135,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img id="toolbarlogo" src="../../images/hu_logo.png" alt="HU" />
         </app-toolbar>
         <iron-selector selected="[[_ar_page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href$="[[_c_baseURL]]">
+       <!--    <a name="home" href$="[[_c_baseURL]]">
             <iron-icon icon="home"></iron-icon>
             <span>Home</span>
-          </a>
+          </a> -->
 
           <!-- altijd beschikbaar -->
-          <a name="systeem_instellen_systeemdatum" href$="[[_c_baseURL]]systeem_instellen_systeemdatum" >
+       <!--    <a name="systeem_instellen_systeemdatum" href$="[[_c_baseURL]]systeem_instellen_systeemdatum" >
             <iron-icon icon="icons:today"></iron-icon>
             <span>(test) Instellen systeemdatum</span>
-          </a>
+          </a> -->
 
           <a name="login" href$="[[_c_baseURL]]login"  verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
             <iron-icon icon="account-box"></iron-icon>
@@ -163,6 +163,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </a>
 
           <!-- beschikbaar voor student -->
+             <a name="student_home" href$="[[_c_baseURL]]student_home" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+
+
           <a name="student_medestudenten" href$="[[_c_baseURL]]student_medestudenten" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
             <span>Toon medestudenten</span>
@@ -245,6 +251,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!-- sections voor docent -->
 
  <!-- sections voor student -->
+    <section page-name="student_home"
+                    title="Home"
+                    element$="my-student-home">
+                  <my-student-home
+                          c_username="[[_username]]"
+                          c_rol="[[_rol]]"
+                          c_visible="[[_are_strings_equal(_ar_page, 'student_home')]]">
+                  </my-student-home>
+          </section>
+
           <section  page-name="student_medestudenten"
                     title="OVERZICHT MEDESTUDENTEN"
                     element$="my-medestudenten">
@@ -382,7 +398,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           //  this.$.drawer.close();
           //}
           if ((pNewPage == "") || (pNewPage == undefined)){
-              this._ar_page = "home";
+              this._ar_page = "login";
             } else {
               this._ar_page = pNewPage;
             }
