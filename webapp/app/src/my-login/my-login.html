@@ -133,12 +133,15 @@
         _go_home: function() {
           var lApp = document.querySelector('my-app');  //het polymer element <my-app>
           var lAppRouter = lApp.$.approuter;
-          if (this._rol == "student") {
+          if (this.rol == "student") {
             lAppRouter.data={page: "student_home"};
+            console.log("to student");
           }
-          if (this._rol == "docent") {
+          if (this.rol == "docent") {
             lAppRouter.data={page: "docent_home"};
-          }           
+            console.log("to docent");
+          }
+          console.log("rol: "+ this.rol);            
          },
 
          _ophalen_login_request_handler: function() {
