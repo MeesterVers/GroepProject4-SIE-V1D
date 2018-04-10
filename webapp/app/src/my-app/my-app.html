@@ -231,7 +231,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <section page-name="login"
               	   title="LOGIN"
               	   element$="my-login">
-            <paper-material elevation="1" style="max-width: 380px;">'
+            <paper-material elevation="1" style="max-width: 380px;">
               <my-login username="{{_username}}" rol="{{_rol}}" ></my-login>
             </paper-material>
           </section>
@@ -239,9 +239,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <section page-name="logout"
                    title="UITLOGGEN"
                    element="my-logout">
-            <paper-material elevation="1">
               <my-logout rol="{{_rol}}"></my-logout>
-            </paper-material>
           </section>
 
 <!-- sections voor docent -->
@@ -250,7 +248,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <section  page-name="student_medestudenten"
                     title="OVERZICHT MEDESTUDENTEN"
                     element$="my-medestudenten">
-            <paper-material elevation="1">
               <!--
                   c_visible="true" als deze section geselecteerd is.
                   LET OP: boolean values moeten als string doorgegeven worden,
@@ -262,31 +259,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 c_rol="[[_rol]]"
                 c_username="[[_username]]">
               </my-medestudenten>
-            </paper-material>
           </section>
 
           <section page-name="student_rooster"
                     title="Rooster"
                     element$="my-rooster">
-              <paper-material elevation="1">
                   <my-rooster
                           c_username="[[_username]]"
                           c_rol="[[_rol]]"
                           c_visible="[[_are_strings_equal(_ar_page, 'student_rooster')]]">
                   </my-rooster>
-              </paper-material>
           </section>
 
           <section page-name="student_afmelden"
                    title="Afmelden"
                    element$="my-afmelden">
-              <paper-material elevation="1">
                   <my-afmelden
                           c_username="[[_username]]"
                          c_rol="[[_rol]]"
                          c_visible="[[_are_strings_equal(_ar_page, 'student_afmelden')]]">
                   </my-afmelden>
-              </paper-material>
           </section>
 
           <section page-name="docent_presentielijst"
