@@ -84,23 +84,28 @@
                     c_visible: {
                         type: Boolean,
                         value: false,
-                        observer: '_rooster_ophalen_request_handler'
+                        observer: '_rooster_ophalen_request_handler',
                     },
-                    _rooster_ophalen_request_handler: function() {
-                        if (this.c_visible) {
-                            if (this.c_rol=="docent") {
-                                this.$.rooster_ophalen.contentType="application/json";
-                                this.$.rooster_ophalen.body={
-                                    "username": this.c_username
-                                };
-                                this.$.rooster_ophalen.generateRequest();
-                            }
-                        }
-                    },
-                    _rooster_ophalen_response_handler: function(request) {
-                        this.c_rooster = request.detail.response;
-                        console.log(this.c_rooster);
+                    c_username: {
+                        type: String
                     }
+                },
+
+                _rooster_ophalen_request_handler: function() {
+                    console.log("in");
+                    if (this.c_visible) {
+                        if (this.c_rol=="docent") {
+                            this.$.rooster_ophalen.contentType="application/json";
+                            this.$.rooster_ophalen.body={
+                                "username": this.c_username
+                            };
+                            this.$.rooster_ophalen.generateRequest();
+                        }
+                    }
+                },
+                _rooster_ophalen_response_handler: function(request) {
+                    this.c_rooster = request.detail.response;
+                    console.log(this.c_rooster);
                 }
 
             });

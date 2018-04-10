@@ -46,7 +46,6 @@ public class PresentieController implements Handler {
         String[] parts = les.split("\\.");
         String vakCode = parts[0];
         String datum = parts[1];
-        System.out.println(vakCode + " " + datum);
         JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
 
         for (Les l : rooster) {
