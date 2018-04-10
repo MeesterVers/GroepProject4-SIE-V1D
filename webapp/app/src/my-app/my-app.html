@@ -293,7 +293,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    title="Presentielijst"
                    element$="my-presentielijst">
               <paper-material elevation="1">
-                  <my-presentielijst></my-presentielijst>
+                  <my-presentielijst
+                          c_username="[[_username]]"
+                          c_rol="[[_rol]]"
+                          c_visible="[[_are_strings_equal(_ar_page, 'docent_presentielijst')]]">
+                  </my-presentielijst>
               </paper-material>
           </section>
 
