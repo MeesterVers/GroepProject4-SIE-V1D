@@ -30,20 +30,53 @@
 
         <h1>Rooster</h1>
 
-        <template is="dom-repeat" items="{{_toArray(c_rooster)}}" as="datum" filter="_isdag" observe="datum.name">
-            <div class="">
-            <h2>{{datum.name}}</h2>
-            <template is="dom-repeat" items="{{datum.value}}">
-                <div>{{item.startTijd}}</div>
+
+            <template is="dom-repeat" items="{{_toArray(c_rooster)}}" as="datum" filter="_isdag" observe="datum.name">
+                <div class="roosterdag">
+                <h2>{{datum.name}}</h2>
+
+                <template is="dom-repeat" items="{{datum.value}}">
+                    <paper-card class="roosterles" on-tap="modum">
+                        <div>{{item.startTijd}}<br>
+                        [[item.vakCode]]<br>
+                        [[item.docent]]</div></paper-card>
+                </template>
+                </div>
             </template>
-            </div>
-        </template>
 
 
 
+    <div id="modum">
+        <h1 id="vakcode"></h1>
+        <h1 id="lokaal"></h1>
+        <h2 id="docent"></h2>
+        <h2 id="klas"></h2>
+        <h3 id="datum"></h3>
+        <h3 id="starttijd"></h3>
+        <h3 id="eindtijd"></h3>
+
+    </div>
 
         <style>
+        .roosterdag{
+            float:left;
+            width: 20%;
 
+        }
+        .roosterles{
+            cursor:pointer;
+        }
+        #modum{
+            position:fixed;
+            right: 5%;
+            left: 30%;
+            top: 5%;
+            bottom: 5%;
+            background-color:white;
+            border: solid black 1px;
+            border-radius:10px;
+            display:none;
+        }
         </style>
     </template>
 
@@ -135,8 +168,28 @@
                         }
                     }
 
-                }
+                },
+                modum: function(e){
+                  var datum = e.model.item.datum;
+                  var starttijd = e.model.item.startTijd;
+                  var eindtijd = e.model.item.eindTijd;
+                  var vakcode = e.model.item.vakCode;
+                  var docent = e.model.item.docent;
+                  var klas = e.model.item.klasCode;
+                  var lokaal = e.model.item.lokaal;
+                  alert(datum+starttijd+vakcode+docent);
+                  var modum = Polymer.dom(this.root).querySelector("#modum");
+                  modum.style.display = 'block';
+                  Polymer.dom(this.root).querySelector("#datum").innerHTML = datum;
+                  Polymer.dom(this.root).querySelector("#starttijd").innerHTML = starttijd;
+                  Polymer.dom(this.root).querySelector("#eindtijd").innerHTML = eindtijd;
+                  Polymer.dom(this.root).querySelector("#vakcode").innerHTML = vakcode;
+                  Polymer.dom(this.root).querySelector("#docent").innerHTML = docent;
+                  Polymer.dom(this.root).querySelector("#klas").innerHTML = klas;
+                  Polymer.dom(this.root).querySelector("#lokaal").innerHTML = lokaal;
 
+
+                }
             });
         })();
     </script>
