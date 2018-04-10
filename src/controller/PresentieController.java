@@ -43,20 +43,23 @@ public class PresentieController implements Handler {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
         ArrayList<Les> rooster = informatieSysteem.getRooster();
         String les = lJsonObjectIn.getString("les");
+        String docent = lJsonObjectIn.getString("username");
         String[] parts = les.split("\\.");
         String vakCode = parts[0];
         String datum = parts[1];
+        String startTijd = parts[2];
         JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
 
         for (Les l : rooster) {
-            if (l.getDatum().equals(datum) && l.getVakCode().equals(vakCode)) {
+            if (l.getDatum().equals(datum) && l.getVakCode().equals(vakCode) && l.getStartTijd().equals(startTijd) && l.getDocent().equals(docent)) {
                 String klascode = l.getKlasCode();
                 Klas klasobj = informatieSysteem.getKlasviacode(klascode);
                 JsonObjectBuilder lJsonObjectBuilderLes = Json.createObjectBuilder();
                 lJsonObjectBuilderLes
                         .add("klasCode", l.getKlasCode())
                         .add("startTijd", l.getStartTijd())
-                        .add("eindTijd", l.getEindTijd());
+                        .add("eindTijd", l.getEindTijd())
+                        .add("vakCode", l.getVakCode());
                 JsonArrayBuilder lJsonArrayBuilder1 = Json.createArrayBuilder();
                 for (Student std : klasobj.getStudenten()) {
                     JsonObjectBuilder lJsonObjectBuilderStudent = Json.createObjectBuilder();
@@ -91,25 +94,6 @@ public class PresentieController implements Handler {
 
         String lJsonOutStr = lJsonArrayBuilder.build().toString();
         conversation.sendJSONMessage(lJsonOutStr);
-
-//        for (Klas k : klassen) {
-//            JsonObjectBuilder lJsonObjectBuilderKlas = Json.createObjectBuilder();
-//            lJsonObjectBuilderKlas
-//                .add("klasCode", k.getKlasCode())
-//                .add("naam", k.getNaam());
-//            JsonArrayBuilder lJsonArrayBuilder1 = Json.createArrayBuilder();
-//            for (Student l : k.getStudenten()) {
-//                JsonObjectBuilder lJsonObjectBuilderLeerling = Json.createObjectBuilder();
-//                lJsonObjectBuilderLeerling
-//                        .add("naam", l.getVoornaam())
-//                        .add("achternaam", l.getVolledigeAchternaam());
-//                lJsonArrayBuilder1.add(lJsonObjectBuilderLeerling);
-//            }
-//            lJsonObjectBuilderKlas.add("leerling", lJsonArrayBuilder1);
-//            lJsonArrayBuilder.add(lJsonObjectBuilderKlas);
-//        }
-//        String lJsonOutStr = lJsonArrayBuilder.build().toString();
-//        conversation.sendJSONMessage(lJsonOutStr);
 
     }
 }

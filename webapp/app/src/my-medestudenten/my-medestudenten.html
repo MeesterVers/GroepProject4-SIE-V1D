@@ -60,8 +60,18 @@
         margin-top: 5px;                    /* enlarge thet default */
         margin-left: 0px;                   /* reduce the default */
       }
+
+      .test {
+        /* display: block; */
+        padding: 16px 16px 16px 16px;
+        /* width: 1000px; */
+        margin: 20px auto 16px auto;
+        background: var(--app-lightgray);
+        max-width: 700px;
+      }
     </style>
 
+    <div class="test">
     <paper-toast
       id="toast_invalid_aanroep"
       duration="0"
@@ -109,7 +119,7 @@
       handle-as="json"
       on-response="_medestudenten_opslaan_response_handler">
     </iron-ajax>
-
+    </div>
   </template>
 
   <script>
