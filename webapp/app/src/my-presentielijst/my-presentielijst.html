@@ -21,13 +21,48 @@
             on-response="_leerlingen_ophalen_response_handler">
         </iron-ajax>
 
+        <iron-ajax
+                id="rooster_ophalen"
+                method="POST"
+                url="/student/rooster"
+                handle-as="json"
+                on-response="_rooster_ophalen_response_handler">
+        </iron-ajax>
+
 
         <style>
+            input[type=text],
+            input[type=date],
+            input[type=datetime],
+            input[type=number],
+            input[type=search],
+            input[type=time],
+            input[type=url],
+            input[type=email],
+            textarea,
+            select{
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                border:1px solid #BEBEBE;
+                padding: 7px;
+                outline: none;
+            }
 
+            select, input, textarea {
+                width: 250px;
+                margin: 10px;
+            }
         </style>
         <h1>Presentielijst</h1>
+        <select name="les" value="{{les::change}}" required>
+            <option value="" hidden>les</option>
+            <template is="dom-repeat" items="{{c_rooster}}">
+                <option value="[[item.vakCode]].[[item.datum]]">{{item.vakCode}} ({{item.datum}})</option>
+            </template>
+        </select>
     </template>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         (function() {
             'use strict';
@@ -40,6 +75,13 @@
                 is: 'my-presentielijst',
 
                 properties: {
+                    c_rooster: {
+                        type: Array
+                    },
+                    _rooster_ophalen_response_handler: function(request) {
+                        this.c_rooster = request.detail.response;
+                        console.log(this.c_rooster);
+                    }
                 }
 
             });
