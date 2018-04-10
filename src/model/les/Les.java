@@ -27,6 +27,8 @@ public class Les {
         this.klasCode = klasCode;
     }
 
+    public void leegPresenties() { presenties = new ArrayList<>();}
+
     public void voegAfwezigheidToe(Afwezigheid afw) {
         afwezigheden.add(afw);
     }

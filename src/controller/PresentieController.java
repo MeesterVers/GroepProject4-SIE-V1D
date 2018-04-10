@@ -130,6 +130,7 @@ public class PresentieController implements Handler {
         //Het Json-array heeft als naam: "groupMembers"
         JsonArray leerlingen = lJsonObjectIn.getJsonArray("leerlingen");
 
+        rooster_les.leegPresenties();
         if (leerlingen != null) {
             // bepaal op basis van de huidige tijd een unieke string
             for (int i=0;i<leerlingen.size();i++){
@@ -140,6 +141,13 @@ public class PresentieController implements Handler {
                 rooster_les.voegPresentieToe(new Presentie(std, status));
             }
         }
+
+//        for (Les l : informatieSysteem.getRooster()) {
+//            for (Presentie p : l.getPresenties()) {
+//                System.out.println(p);
+//            }
+//        }
+//        System.out.println("\n");
 
         JsonObjectBuilder lJob = Json.createObjectBuilder();
         lJob.add("errorcode", 0);
