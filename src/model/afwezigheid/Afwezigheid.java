@@ -39,6 +39,18 @@ public class Afwezigheid {
     public String getBeschrijving() {
         return beschrijving;
     }
+
+    @Override
+    public String toString() {
+        return "Afwezigheid{" +
+                "soort='" + soort + '\'' +
+                ", startDatum='" + startDatum + '\'' +
+                ", eindDatum='" + eindDatum + '\'' +
+                ", beschrijving='" + beschrijving + '\'' +
+                ", student=" + student +
+                ", vak='" + vak + '\'' +
+                '}';
+    }
 }
 
 

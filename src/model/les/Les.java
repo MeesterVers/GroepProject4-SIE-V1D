@@ -1,6 +1,7 @@
 package model.les;
 
 import model.afwezigheid.Afwezigheid;
+import model.presentie.Presentie;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,7 @@ public class Les {
     private String docent;
     private String lokaal;
     private String klasCode;
+    private ArrayList<Presentie> presenties = new ArrayList<Presentie>();
     private ArrayList<Afwezigheid> afwezigheden = new ArrayList<Afwezigheid>();
 
     public Les(String datum, String startTijd, String eindTijd, String vakCode, String docent, String lokaal, String klasCode) {
@@ -27,6 +29,12 @@ public class Les {
 
     public void voegAfwezigheidToe(Afwezigheid afw) {
         afwezigheden.add(afw);
+    }
+
+    public void voegPresentieToe(Presentie prs) { presenties.add(prs); }
+
+    public ArrayList<Presentie> getPresenties() {
+        return presenties;
     }
 
     public ArrayList<Afwezigheid> getAfwezigheden() {
@@ -61,6 +69,7 @@ public class Les {
         return lokaal;
     }
 
+    @Override
     public String toString() {
         return "Les{" +
                 "datum='" + datum + '\'' +
@@ -70,6 +79,8 @@ public class Les {
                 ", docent='" + docent + '\'' +
                 ", lokaal='" + lokaal + '\'' +
                 ", klasCode='" + klasCode + '\'' +
+                ", presenties=" + presenties +
+                ", afwezigheden=" + afwezigheden +
                 '}';
     }
 }
