@@ -3,6 +3,7 @@ package model.klas;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import model.persoon.Student;
 
@@ -45,4 +46,17 @@ public class Klas {
 		}
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Klas klas = (Klas) o;
+		return Objects.equals(klasCode, klas.klasCode);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(klasCode);
+	}
 }
