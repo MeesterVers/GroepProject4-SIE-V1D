@@ -65,7 +65,8 @@ public class PresentieController implements Handler {
                     JsonObjectBuilder lJsonObjectBuilderStudent = Json.createObjectBuilder();
                     lJsonObjectBuilderStudent
                             .add("naam", std.getVoornaam())
-                            .add("achternaam", std.getVolledigeAchternaam());
+                            .add("achternaam", std.getVolledigeAchternaam())
+                            .add("soort", "aanwezig");
                     for (Afwezigheid afw : l.getAfwezigheden()) {
                         if (afw.getStudent().getGebruikersnaam().equals(std.getGebruikersnaam())) {
                             lJsonObjectBuilderStudent

@@ -94,6 +94,7 @@
             <tr>
                 <th>Student</th>
                 <th>Aanwezigheid</th>
+                <th>Perecentage aanwezig</th>
                 <th>Status</th>
             </tr>
             <template is="dom-repeat" items="{{les}}">
@@ -106,6 +107,7 @@
                         <option value="afwezig">afwezig</option>
                     </select>
                 </td>
+                <td>[[item.percentage]]</td>
                 <td>[[item.soort]]</td>
             </tr>
             </template>
