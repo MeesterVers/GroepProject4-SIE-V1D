@@ -33,15 +33,13 @@
 
             <template is="dom-repeat" items="{{_toArray(c_rooster)}}" as="datum" filter="_isdag" observe="datum.name">
                 <div class="roosterdag">
-                    <h2>{{datum.value.dagnaam}}</h2>
                 <h2>{{datum.name}}</h2>
 
                 <template is="dom-repeat" items="{{datum.value}}">
                     <paper-card class="roosterles" on-tap="modum">
                         <div>{{item.startTijd}}<br>
                         [[item.vakCode]]<br>
-                        [[item.docent]]
-                        [[item.dagnaam]]</div></paper-card>
+                        [[item.docent]]</div></paper-card>
                 </template>
                 </div>
             </template>
@@ -49,6 +47,7 @@
 
 
     <div id="modum">
+        <h1 id="dagnaam"></h1>
         <h1 id="vakcode"></h1>
         <h1 id="lokaal"></h1>
         <h2 id="docent"></h2>
@@ -139,7 +138,7 @@
                         var dag = datum.getDay();
                         var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
                         var dagnaam = days[dag];
-                        les.dagnaam = dagnaam;
+                        les.dagNaam = dagnaam;
                                 if (les.datum in dagen) {
                                     dagen[les.datum].push(les);
                                 } else {
