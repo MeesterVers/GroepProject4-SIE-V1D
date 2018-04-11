@@ -22,14 +22,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
     :host {
+      height: 100vh;
+      overflow: hidden;
       --app-primary-color: #4285f4;
       --app-secondary-color: black;
       --app-very-lightgray: #fafafa;
       --app-lightgray: #EEE;
-      --app-blue: #1a9fd9;
+      --app-blue: #91bdd1;
       display: block;
       font-size: 14px;                                        /*toegevoegd tov psk                */
       font-weight: 400;                                       /*toegevoegd tov psk                */
+    }
+
+    section.login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
 
     app-drawer {                                                   /*toegevoegd tov psk */
@@ -45,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   #toolbarlogo {
     height: 37px;
-    background: white;
+    background: transparent;
     padding: 4px;                                           /* to adjust the icon position */
     padding-left: 11px;                                     /* to adjust the icon position */
   }
@@ -79,6 +88,8 @@ paper-material {
   padding: 16px 16px 16px  16px;
   width: calc(98% - 132px);
   margin: 16px auto 16px auto;
+  margin-top: 0px;
+  margin-bottom: 80px;
   background: var(--app-lightgray);
 }
 
@@ -169,12 +180,6 @@ paper-material {
           <span>Home</span>
         </a>
 
-
-        <a name="student_medestudenten" href$="[[_c_baseURL]]student_medestudenten" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
-          <iron-icon icon="social:group"></iron-icon>
-          <span>Toon medestudenten</span>
-        </a>
-
         <a name="student_rooster" href$="[[_c_baseURL]]student_rooster" verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
           <iron-icon icon="icons:schedule"></iron-icon>
           <span>Toon rooster</span>
@@ -195,8 +200,7 @@ paper-material {
     <!-- Main Content -->
     <!-- blue title toolbar in menu -->
     <app-toolbar class="toolbar">
-      <paper-icon-button  icon="menu" drawer-toggle></paper-icon-button>
-      <span>[[_ar_selected_object.title]] ([[_systeemdatumlokaal]])</span>
+      <span>Datum: [[_ar_selected_object.title]] [[_systeemdatumlokaal]]</span>
     </app-toolbar>
 
     <iron-pages
@@ -239,7 +243,7 @@ paper-material {
                   </paper-material>
                 </section>
 
-                <section page-name="login"
+                <section class="login" page-name="login"
                 title="LOGIN"
                 element$="my-login">
                 <paper-material elevation="1" style="max-width: 380px;">
