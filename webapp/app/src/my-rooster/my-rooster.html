@@ -47,6 +47,7 @@
 
 
     <div id="modum">
+        <h1 id="dagnaam"></h1>
         <h1 id="vakcode"></h1>
         <h1 id="lokaal"></h1>
         <h2 id="docent"></h2>
@@ -133,30 +134,17 @@
                     this.c_rooster = request.detail.response;
                     var dagen = {};
                     this.c_rooster.forEach(function(les) {
-                          var lesdatum = new Date(les.datum);
-                          var d = new Date();
-                          d.setHours(0,0,0,0);
-                          var day = d.getDay(),
-                          diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
-                          d.setDate(diff);
-                          console.log(d);
-                          for(var i = 0; i<6;i++){
-                            var day = new Date();
-                            day.setDate( d.getDate() + i);
-                            var dag = day.getDate();
-                            var maand = day.getMonth()+1;
-                            var jaar = day.getFullYear();
-                            day = new Date(jaar+"-"+maand+"-"+dag);
-                            if (day.getTime() === lesdatum.getTime()){
-                                console.log(day);
-
-                           }
+                        var datum = new Date(les.datum);
+                        var dag = datum.getDay();
+                        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                        var dagnaam = days[dag];
+                        les.dagNaam = dagnaam;
                                 if (les.datum in dagen) {
                                     dagen[les.datum].push(les);
                                 } else {
                                     dagen[les.datum] = [les];
                                 }
-                          }
+
                     });
                     this.c_rooster = dagen;
                 },
