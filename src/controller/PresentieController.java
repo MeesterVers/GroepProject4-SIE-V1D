@@ -1,14 +1,15 @@
 package controller;
 
-import java.util.Calendar;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import java.util.ArrayList;
 
 import model.PrIS;
 import model.afwezigheid.Afwezigheid;
@@ -29,7 +30,11 @@ public class PresentieController implements Handler {
 
     public void handle(Conversation conversation) {
         if (conversation.getRequestedURI().startsWith("/docent/presentie/ophalen")) {
-            ophalen(conversation);
+            try {
+                ophalen(conversation);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else {
             opslaan(conversation);
         }
@@ -42,7 +47,7 @@ public class PresentieController implements Handler {
      *
      * @param conversation - alle informatie over het request
      */
-    private void ophalen(Conversation conversation) {
+    private void ophalen(Conversation conversation) throws ParseException {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
         ArrayList<Les> rooster = informatieSysteem.getRooster();
         String les = lJsonObjectIn.getString("les");
@@ -82,13 +87,26 @@ public class PresentieController implements Handler {
                         }
                     }
 
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    Date les_datum = format.parse(datum);
+                    System.out.println(les_datum);
+
                     for (Afwezigheid afw : informatieSysteem.getPeriodeAfwezigheden()) {
                         if (afw.getStudent().getGebruikersnaam().equals(std.getGebruikersnaam())) {
-                            lJsonObjectBuilderStudent
+                            Date afw_start_datum = format.parse(afw.getStartDatum());
+                            Date afw_eind_datum = format.parse(afw.getEindDatum());
+
+                            System.out.println(les_datum + " " + afw_start_datum + " " + afw_eind_datum);
+                            if (afw_start_datum.compareTo(les_datum) * les_datum.compareTo(afw_eind_datum) >= 0) {
+                                System.out.println("true");
+                                lJsonObjectBuilderStudent
                                     .add("soort", afw.getSoort())
                                     .add("startDatum", afw.getStartDatum())
                                     .add("eindDatum", afw.getEindDatum())
                                     .add("beschrijving", afw.getBeschrijving());
+                                }
+                            } else {
+                            //System.out.println("false");
                         }
                     }
                     lJsonArrayBuilder1.add(lJsonObjectBuilderStudent);
