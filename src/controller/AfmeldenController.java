@@ -44,19 +44,31 @@ public class AfmeldenController implements Handler {
         Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
 
         String soort = lJsonObjectIn.getString("soort");
-        String beschrijving = lJsonObjectIn.getString("beschrijving");
+        String afwezigheidLes = lJsonObjectIn.getString("les");
 
+        String beschrijving = "";
         String startDatum;
         String eindDatum;
         String vakCode = "";
         String datum = "";
 
         if (soort.equals("Afwezig")) {
+            beschrijving = lJsonObjectIn.getString("beschrijving");
             startDatum = lJsonObjectIn.getString("startDatum");
             eindDatum = lJsonObjectIn.getString("eindDatum");
             informatieSysteem.voegPeriodeAfwezigheidToe(new Afwezigheid(soort, startDatum, eindDatum, beschrijving, lStudentZelf, ""));
-        } else {
-            String afwezigheidLes = lJsonObjectIn.getString("les");
+
+        }
+
+        if(soort.equals("Ziek") && afwezigheidLes.equals("allemaal")){
+            startDatum = lJsonObjectIn.getString("startDatum");
+            eindDatum = lJsonObjectIn.getString("eindDatum");
+            informatieSysteem.voegPeriodeAfwezigheidToe(new Afwezigheid(soort, startDatum, eindDatum, beschrijving, lStudentZelf, ""));
+            
+        }
+
+        if(soort.equals("Te laat")){
+            beschrijving = lJsonObjectIn.getString("beschrijving");
             String[] parts = afwezigheidLes.split("\\.");
             vakCode = parts[0];
             datum = parts[1];

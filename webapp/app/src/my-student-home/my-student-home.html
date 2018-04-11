@@ -12,11 +12,19 @@
   </iron-ajax>
 
   <iron-ajax
-  id="rooster_ophalen"
+  id="leerling_ziekmelden"
   method="POST"
-  url="/student/rooster"
-  handle-as="json"
-  on-response="_rooster_ophalen_response_handler">
+  url="/student/afmelden"
+  on-response="_leerling_status_update">
+</iron-ajax>
+
+
+<iron-ajax
+id="rooster_ophalen"
+method="POST"
+url="/student/rooster"
+handle-as="json"
+on-response="_rooster_ophalen_response_handler">
 </iron-ajax>
 
 
@@ -212,9 +220,27 @@ tbody{
           this.leerlingen = this.les.leerlingen;
         },
         
-        _ziek_melden: function() {
-          alert("ziek melden");
-        }
+        _ziek_melden(){
+          var volgendjaar = "";
+          var vandaag = new Date();
+          var dag = vandaag.getDate();
+          var maand = vandaag.getMonth()+1;
+          var jaar = vandaag.getFullYear();
+
+          vandaag = jaar+"-"+maand+"-"+dag;
+          volgendjaar = jaar+1+"-"+maand+"-"+dag;
+
+          this.$.leerling_ziekmelden.contentType="application/json";
+          this.$.leerling_ziekmelden.body={
+            "username": this.c_username,
+            "soort": "Ziek",
+            "les": "allemaal",
+            "startDatum": vandaag,
+            "eindDatum": volgendjaar
+          };
+          this.$.leerling_ziekmelden.generateRequest();
+        },
+        
       });
   })();
 </script>
