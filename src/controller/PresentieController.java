@@ -15,6 +15,7 @@ import model.afwezigheid.Afwezigheid;
 import model.klas.Klas;
 import model.les.Les;
 import model.persoon.Student;
+import model.presentie.Presentie;
 import server.Conversation;
 import server.Handler;
 
@@ -27,8 +28,10 @@ public class PresentieController implements Handler {
     }
 
     public void handle(Conversation conversation) {
-        if (conversation.getRequestedURI().startsWith("/docent/presentie")) {
+        if (conversation.getRequestedURI().startsWith("/docent/presentie/ophalen")) {
             ophalen(conversation);
+        } else {
+            opslaan(conversation);
         }
     }
 
@@ -56,6 +59,7 @@ public class PresentieController implements Handler {
                 Klas klasobj = informatieSysteem.getKlasviacode(klascode);
                 JsonObjectBuilder lJsonObjectBuilderLes = Json.createObjectBuilder();
                 lJsonObjectBuilderLes
+                        .add("datum", l.getDatum())
                         .add("klasCode", l.getKlasCode())
                         .add("startTijd", l.getStartTijd())
                         .add("eindTijd", l.getEindTijd())
@@ -64,6 +68,7 @@ public class PresentieController implements Handler {
                 for (Student std : klasobj.getStudenten()) {
                     JsonObjectBuilder lJsonObjectBuilderStudent = Json.createObjectBuilder();
                     lJsonObjectBuilderStudent
+                            .add("id", std.getStudentNummer())
                             .add("naam", std.getVoornaam())
                             .add("achternaam", std.getVolledigeAchternaam())
                             .add("soort", "aanwezig");
@@ -96,5 +101,59 @@ public class PresentieController implements Handler {
         String lJsonOutStr = lJsonArrayBuilder.build().toString();
         conversation.sendJSONMessage(lJsonOutStr);
 
+    }
+
+
+    /**
+     * Deze methode haalt eerst de opgestuurde JSON-data op. Op basis van deze gegevens
+     * het domeinmodel gewijzigd. Een eventuele errorcode wordt tenslotte
+     * weer (als JSON) teruggestuurd naar de Polymer-GUI!
+     *
+     * @param conversation - alle informatie over het request
+     */
+    private void opslaan(Conversation conversation) {
+        JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+        String vakCode= lJsonObjectIn.getString("vakCode");
+        String klasCode = lJsonObjectIn.getString("klasCode");
+        String datum = lJsonObjectIn.getString("datum");
+
+        Les rooster_les = null;
+        for (Les l : informatieSysteem.getRooster()) {
+            if (l.getVakCode().equals(vakCode) && l.getKlasCode().equals(klasCode) && l.getDatum().equals(datum)) {
+                rooster_les = l;
+            }
+        }
+
+        //Het lJsonObjectIn bevat niet enkel strings maar ook een heel (Json) array van Json-objecten.
+        // in dat Json-object zijn telkens het studentnummer en een indicatie of de student
+        // tot het zelfde team hoort opgenomen.
+
+        //Het Json-array heeft als naam: "groupMembers"
+        JsonArray leerlingen = lJsonObjectIn.getJsonArray("leerlingen");
+
+        rooster_les.leegPresenties();
+        if (leerlingen != null) {
+            // bepaal op basis van de huidige tijd een unieke string
+            for (int i=0;i<leerlingen.size();i++){
+                JsonObject leerling = leerlingen.getJsonObject(i);
+                String status = leerling.getString("status");
+                String id = leerling.getString("id");
+                Student std = informatieSysteem.getStudent(Integer.parseInt(id));
+                rooster_les.voegPresentieToe(new Presentie(std, status));
+            }
+        }
+
+//        for (Les l : informatieSysteem.getRooster()) {
+//            for (Presentie p : l.getPresenties()) {
+//                System.out.println(p);
+//            }
+//        }
+//        System.out.println("\n");
+
+        JsonObjectBuilder lJob = Json.createObjectBuilder();
+        lJob.add("errorcode", 0);
+        //nothing to return use only errorcode to signal: ready!
+        String lJsonOutStr = lJob.build().toString();
+        conversation.sendJSONMessage(lJsonOutStr);					// terug naar de Polymer-GUI!
     }
 }

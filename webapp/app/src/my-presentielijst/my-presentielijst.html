@@ -17,16 +17,23 @@
         <iron-ajax
             id="leerlingen_ophalen"
             method="POST"
-            url="/docent/presentie"
+            url="/docent/presentie/ophalen"
             on-response="_leerlingen_ophalen_response_handler">
         </iron-ajax>
 
         <iron-ajax
-                id="rooster_ophalen"
-                method="POST"
-                url="/student/rooster"
-                handle-as="json"
-                on-response="_rooster_ophalen_response_handler">
+            id="leerlingen_verzenden"
+            method="POST"
+            url="/docent/presentie/opslaan"
+            on-response="_leerlingen_verzenden_response_handler">
+        </iron-ajax>
+
+        <iron-ajax
+            id="rooster_ophalen"
+            method="POST"
+            url="/student/rooster"
+            handle-as="json"
+            on-response="_rooster_ophalen_response_handler">
         </iron-ajax>
 
 
@@ -90,18 +97,18 @@
             </template>
         </select>
         <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
-        <table>
+        <table style="margin-top: 30px;">
             <tr>
                 <th>Student</th>
                 <th>Aanwezigheid</th>
                 <th>Perecentage aanwezig</th>
                 <th>Status</th>
             </tr>
-            <template is="dom-repeat" items="{{les}}">
+            <template is="dom-repeat" items="{{leerlingen}}">
             <tr>
                 <td>[[item.naam]]</td>
                 <td>
-                    <select name="aanwezigheid">
+                    <select name="aanwezigheid" id="[[item.naam]].[[item.id]]" class="aanwezigheid">
                         <option value="aanwezig">aanwezig</option>
                         <option value="te laat">te laat</option>
                         <option value="afwezig">afwezig</option>
@@ -112,7 +119,7 @@
             </tr>
             </template>
         </table>
-        <paper-button type="submit" on-click="">Bevestig</paper-button>
+        <paper-button style="margin-top: 30px;" type="submit" on-click="_statusChangeHandler">Bevestig</paper-button>
     </template>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -143,6 +150,13 @@
                     },
                     les: {
                         type: Object
+                    },
+                    leerlingen: {
+                        type: Array
+                    },
+                    presentie: {
+                        type: Array,
+                        value: []
                     }
                 },
 
@@ -171,12 +185,30 @@
                 },
 
                 _leerlingen_ophalen_response_handler: function(request) {
-                    this.les = request.detail.response;
-                    console.log(this.les);
-                    var leerlingen = this.les[0].leerlingen;
-                    console.log(leerlingen);
-                    this.les = leerlingen;
-                    console.log(this.les);
+                    this.les = request.detail.response[0];
+                    this.leerlingen = this.les.leerlingen;
+                },
+
+                _statusChangeHandler: function() {
+                    if (this.presentie.length > 0) { this.presentie = []; }
+                    var statuses = Polymer.dom(this.root).querySelectorAll(".aanwezigheid")
+                    for (var item of statuses) {
+                        // console.log(item.id + ": " + item.value);
+                        var obj = {};
+                        obj["naam"] = item.id.split(".")[0];
+                        obj["id"] = item.id.split(".")[1];
+                        obj["status"] = item.value;
+                        this.push('presentie', obj);
+                    }
+                    this.$.leerlingen_verzenden.contentType="application/json";
+                    this.$.leerlingen_verzenden.body={
+                        "leerlingen": this.presentie,
+                        "datum": this.les.datum,
+                        "vakCode": this.les.vakCode,
+                        "startTijd": this.les.startTijd,
+                        "klasCode": this.les.klasCode
+                    };
+                    this.$.leerlingen_verzenden.generateRequest();
                 }
 
             });

@@ -39,4 +39,11 @@ public class Student extends Persoon {
 		this.studentNummer = pStudentNummer;
 	}*/
 
+	@Override
+	public String toString() {
+		return "Student{" +
+				"studentNummer=" + studentNummer +
+				", groepId='" + groepId + '\'' +
+				'}';
+	}
 }
