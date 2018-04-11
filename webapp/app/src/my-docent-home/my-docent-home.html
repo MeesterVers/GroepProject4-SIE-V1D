@@ -9,107 +9,102 @@
 <dom-module id="my-docent-home" items="{{c_rooster}}">
   <template>
     <iron-ajax
-            id="leerlingen_ophalen"
-            method="POST"
-            url="/docent/presentie/ophalen"
-            on-response="_leerlingen_ophalen_response_handler">
-    </iron-ajax>
+    id="rooster_ophalen"
+    method="POST"
+    url="/student/rooster"
+    handle-as="json"
+    on-response="_rooster_ophalen_response_handler">
+  </iron-ajax>
 
-    <iron-ajax
-            id="leerlingen_verzenden"
-            method="POST"
-            url="/docent/presentie/opslaan"
-            on-response="_leerlingen_verzenden_response_handler">
-    </iron-ajax>
+  <style>
+  :root {
+    --paper-input-container-focus-color: #1a9fd9;
+  }
+  :host {
+    display: block;
+  }
 
-    <iron-ajax
-            id="rooster_ophalen"
-            method="POST"
-            url="/student/rooster"
-            handle-as="json"
-            on-response="_rooster_ophalen_response_handler">
-    </iron-ajax>
-    <style>
-    :root {
-      --paper-input-container-focus-color: #1a9fd9;
-    }
-    :host {
-      display: block;
-    }
+  input[type=text],
+  input[type=date],
+  input[type=datetime],
+  input[type=number],
+  input[type=search],
+  input[type=time],
+  input[type=url],
+  input[type=email],
+  textarea,
+  select{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid #BEBEBE;
+    padding: 7px;
+    outline: none;
+  }
 
-    input[type=text],
-    input[type=date],
-    input[type=datetime],
-    input[type=number],
-    input[type=search],
-    input[type=time],
-    input[type=url],
-    input[type=email],
-    textarea,
-    select{
-      box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      border:1px solid #BEBEBE;
-      padding: 7px;
-      outline: none;
-    }
+  input[type=button] {
+    background: #1a9fd9;
+    padding: 8px 15px 8px 15px;
+    border: none;
+    color: #fff;
+    transition: 0.2s;
+  }
 
-    input[type=button] {
-      background: #1a9fd9;
-      padding: 8px 15px 8px 15px;
-      border: none;
-      color: #fff;
-      transition: 0.2s;
-    }
+  input[type=button]:hover {
+    background: #1786b7;
+    transition: 0.2s;
+  }
 
-    input[type=button]:hover {
-      background: #1786b7;
-      transition: 0.2s;
-    }
+  select, input, textarea {
+    width: 250px;
+    margin: 10px;
+  }
 
-    select, input, textarea {
-      width: 250px;
-      margin: 10px;
-    }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 30px;
+  }
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 30px;
-    }
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
 
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
 
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
-  </style>
-    <h1>Dag Rooster</h1>
+  .content{
+    padding:10px;
+  }
+</style>
+<div class="content">
+  <h1>Dag Rooster</h1>
 
-    <table>
-      <tr>
-        <th>Klas</th>
-        <th>Lokaal</th>
-        <th>Vak</th>
-        <th>Datum</th>
-      </tr>
-      <tr>
-        <th value="[[item.vakCode]]">{{item.vakCode}}</th>
-
-        <th>Lokaal</th>
-        <th>Vak</th>
-        <th>Datum</th>
-      </tr>
-
-    </table>
-
+  <table>
+    <tr>
+      <th>Klas</th>
+      <th>Lokaal</th>
+      <th>Vak</th>
+      <th>Datum</th>
+      <th>Tijd</th>
+    </tr>
+    <tbody class="rooster_container">
+      <template is="dom-repeat" items="[[c_rooster]]">
+        <tr>
+          <td>[[item.klasCode]]</td>
+          <td>[[item.lokaal]]</td>
+          <td>[[item.vakCode]]</td>
+          <td>[[item.datum]]</td>
+          <td>[[item.startTijd]]/[[item.eindTijd]]</td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
 </template>
-
+</div>
 <script>
   (function() {
     'use strict';
@@ -118,84 +113,41 @@
       is: 'my-docent-home',
 
       properties: {
-        _c_studenten: {
-          type: Array,
-        },
-
-        c_rol: {
-          type: String,
-        },
-        c_username: {
-          type: String,
-        },
-
-        c_visible: {
-          type: Boolean,
-          value: false,
-          observer: '_initializing',
-        },
+       c_rooster: {
+        type: Array
       },
 
-      _initializing : function() {
-        if (this.c_visible) {
-          if (this.c_rol=="docent") {
-            console.log("docent home");
-          }
-        }
+      c_rol: {
+        type: String,
+      },
+      c_username: {
+        type: String,
       },
 
-        _rooster_ophalen_request_handler: function() {
-            if (this.c_visible) {
-                if (this.c_rol=="docent") {
-                    this.$.rooster_ophalen.contentType="application/json";
-                    this.$.rooster_ophalen.body={
-                        "username": this.c_username
-                    };
-                    this.$.rooster_ophalen.generateRequest();
-                }
-            }
-        },
-        _rooster_ophalen_response_handler: function(request) {
-            this.c_rooster = request.detail.response;
-        },
+      c_visible: {
+        type: Boolean,
+        value: false,
+        observer: '_initializing',
+      },
+    },
 
-        _submitHandler: function() {
-            this.$.leerlingen_ophalen.contentType="application/json";
-            this.$.leerlingen_ophalen.body={
-                "les": this.les,
-                "username": this.c_username
-            };
-            this.$.leerlingen_ophalen.generateRequest();
-        },
-
-        _leerlingen_ophalen_response_handler: function(request) {
-            this.les = request.detail.response[0];
-            this.leerlingen = this.les.leerlingen;
-        },
-
-        _statusChangeHandler: function() {
-            if (this.presentie.length > 0) { this.presentie = []; }
-            var statuses = Polymer.dom(this.root).querySelectorAll(".aanwezigheid")
-            for (var item of statuses) {
-                // console.log(item.id + ": " + item.value);
-                var obj = {};
-                obj["naam"] = item.id.split(".")[0];
-                obj["id"] = item.id.split(".")[1];
-                obj["status"] = item.value;
-                this.push('presentie', obj);
-            }
-            this.$.leerlingen_verzenden.contentType="application/json";
-            this.$.leerlingen_verzenden.body={
-                "leerlingen": this.presentie,
-                "datum": this.les.datum,
-                "vakCode": this.les.vakCode,
-                "startTijd": this.les.startTijd,
-                "klasCode": this.les.klasCode
-            };
-            this.$.leerlingen_verzenden.generateRequest();
+    _initializing : function() {
+      if (this.c_visible) {
+        if (this.c_rol=="docent") {
+          this.$.rooster_ophalen.contentType="application/json";
+          this.$.rooster_ophalen.body={
+            "username": this.c_username
+          };
+          this.$.rooster_ophalen.generateRequest();
         }
+      }
+    },
 
-    });
+    _rooster_ophalen_response_handler: function(request) {
+      this.c_rooster = request.detail.response;
+    },
+
+  });
   })();
 </script>
 </dom-module>

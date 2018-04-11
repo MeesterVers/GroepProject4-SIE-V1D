@@ -87,6 +87,9 @@ input[type=button]:hover {
 table {
   border-collapse: collapse;
   width: 100%;
+/*  display: block;
+  height: 400px !important;
+  overflow-y: scroll !important;*/
 }
 td, th {
   border: 1px solid #dddddd;
@@ -220,7 +223,7 @@ tbody{
           this.leerlingen = this.les.leerlingen;
         },
         
-        _ziek_melden(){
+        _ziek_melden: function() {
           var volgendjaar = "";
           var vandaag = new Date();
           var dag = vandaag.getDate();
@@ -240,7 +243,10 @@ tbody{
           };
           this.$.leerling_ziekmelden.generateRequest();
         },
-        
+
+        _leerling_status_update(){
+         alert("Ziek gemeld");
+        }
       });
   })();
 </script>
