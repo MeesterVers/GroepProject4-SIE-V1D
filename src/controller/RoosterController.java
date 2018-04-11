@@ -58,6 +58,7 @@ public class RoosterController implements Handler {
                             .add("vakCode", l.getVakCode())
                             .add("docent", l.getDocent())
                             .add("lokaal", l.getLokaal())
+                            .add("dagNaam", "")
                             .add("klasCode", l.getKlasCode());
                     lJsonArrayBuilder.add(lJsonObjectBuilderLes);
                 }
