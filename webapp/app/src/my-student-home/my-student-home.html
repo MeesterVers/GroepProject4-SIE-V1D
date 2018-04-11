@@ -1,19 +1,140 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <dom-module id="my-student-home">
   <template>
-    <style>
-    :root {
-      --paper-input-container-focus-color: #1a9fd9;
-    }
-    :host {
-      display: block;
-    }
-  </style>
-  <div class="card">
-    <p>Student1</p>
-    <p>[[_rol]]</p>
+    <iron-ajax
+    id="leerlingen_ophalen"
+    method="POST"
+    url="/student/medestudenten/ophalen""
+    on-response="_leerlingen_ophalen_response_handler">
+  </iron-ajax>
+
+  <iron-ajax
+  id="rooster_ophalen"
+  method="POST"
+  url="/student/rooster"
+  handle-as="json"
+  on-response="_rooster_ophalen_response_handler">
+</iron-ajax>
+
+
+<style>
+:root {
+  --paper-input-container-focus-color: #1a9fd9;
+}
+:host {
+  display: block;
+}
+
+input[type=text],
+input[type=date],
+input[type=datetime],
+input[type=number],
+input[type=search],
+input[type=time],
+input[type=url],
+input[type=email],
+textarea,
+select{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border:1px solid #BEBEBE;
+  padding: 7px;
+  outline: none;
+}
+
+input[type=button] {
+  background: #1a9fd9;
+  padding: 8px 15px 8px 15px;
+  border: none;
+  color: #fff;
+  transition: 0.2s;
+}
+
+input[type=button]:hover {
+  background: #1786b7;
+  transition: 0.2s;
+}
+
+.col-half{
+  position: relative;
+  width: 50%;
+  display: inline-block;
+  float: left;
+}
+
+.content{
+  padding:20px;
+}
+
+.ziek-button{
+  width: 100%;
+  background-color: #d9534f;
+  color:#fff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+tbody{
+  height: 100px !important;       /* Just for the demo          */
+  overflow-y: scroll !important;    /* Trigger vertical scroll    */
+  overflow-x: hidden !important;  
+}
+</style>
+<div class="card">
+  <div class="col-half">
+    <div class="content">
+
+    </div>
   </div>
+
+  <div class="col-half">
+    <div class="content">
+     <paper-button class="ziek-button" on-click="_ziek_melden" raised> Ik ben ziek</paper-button>
+     <div class="medestudenten">
+      <hr>
+      <h3>Medestudenten</h3>
+
+      <select name="les" value="{{les::change}}" required>
+        <option value="" hidden>les</option>
+        <template is="dom-repeat" items="{{c_rooster}}">
+          <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]]">{{item.vakCode}} ({{item.datum}})</option>
+        </template>
+      </select>
+      <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
+
+      <table style="margin-top: 30px;">
+        <tr>
+          <th>Naam</th>
+          <th>Aanwezigheid</th>
+        </tr>
+        <tbody class="studenten_container">
+          <template is="dom-repeat" items="{{leerlingen}}">
+            <tr>
+              <td>[[item.naam]]</td>
+              <td>[[item.soort]]</td>
+            </tr>
+          </tbody>
+        </template>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
 </template>
 
 <script>
@@ -24,13 +145,31 @@
       is: 'my-student-home',
 
       properties: {
-        _c_studenten: {
+        leerlingen: {
           type: Array,           
+        },
+
+        c_rooster: {
+          type: Array
+        },
+
+        les: {
+          type: Object
+        },
+
+        leerlingen: {
+          type: Array
+        },
+
+        presentie: {
+          type: Array,
+          value: []
         },
 
         c_rol: {
           type: String,
         },
+
         c_username: {
           type: String,
         },
@@ -45,11 +184,37 @@
       _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
             if (this.c_rol=="student") {                        // voor studenten
-              console.log("student home");
+              this.$.rooster_ophalen.contentType="application/json";
+              this.$.rooster_ophalen.body={
+                "les": this.les,
+                "username": this.c_username
+              };
+              this.$.rooster_ophalen.generateRequest();
             }
           }
         },
 
+        _rooster_ophalen_response_handler: function(request) {
+          this.c_rooster = request.detail.response;
+        },
+
+        _submitHandler: function() {
+          this.$.leerlingen_ophalen.contentType="application/json";
+          this.$.leerlingen_ophalen.body={
+            "les": this.les,
+            "username": this.c_username
+          };
+          this.$.leerlingen_ophalen.generateRequest();
+        },
+
+        _leerlingen_ophalen_response_handler: function(request) {
+          this.les = request.detail.response[0];
+          this.leerlingen = this.les.leerlingen;
+        },
+        
+        _ziek_melden(){
+          alert("ziek melden");
+        }
       });
   })();
 </script>
