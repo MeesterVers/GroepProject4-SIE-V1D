@@ -43,6 +43,7 @@ public class MedestudentenController implements Handler {
      * @param conversation - alle informatie over het request
      */
     private void ophalen(Conversation conversation) {
+        System.out.println("hallo");
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
         ArrayList<Les> rooster = informatieSysteem.getRooster();
         String les = lJsonObjectIn.getString("les");
@@ -51,10 +52,13 @@ public class MedestudentenController implements Handler {
         String vakCode = parts[0];
         String datum = parts[1];
         String startTijd = parts[2];
+        String klasCode = parts[3];
+        System.out.println(klasCode);
         JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
 
         for (Les l : rooster) {
-            if (l.getDatum().equals(datum) && l.getVakCode().equals(vakCode) && l.getStartTijd().equals(startTijd)) {
+            if (l.getDatum().equals(datum) && l.getVakCode().equals(vakCode) && l.getStartTijd().equals(startTijd) && l.getKlasCode().equals(klasCode)) {
+                System.out.println(l.getKlasCode() + " " + klasCode);
                 String klascode = l.getKlasCode();
                 Klas klasobj = informatieSysteem.getKlasviacode(klascode);
                 JsonObjectBuilder lJsonObjectBuilderLes = Json.createObjectBuilder();

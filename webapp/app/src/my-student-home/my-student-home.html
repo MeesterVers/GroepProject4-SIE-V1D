@@ -7,7 +7,7 @@
     <iron-ajax
     id="leerlingen_ophalen"
     method="POST"
-    url="/student/medestudenten/ophalen""
+    url="/student/medestudenten/ophalen"
     on-response="_leerlingen_ophalen_response_handler">
   </iron-ajax>
 
@@ -112,7 +112,7 @@ tbody{
       <select name="les" value="{{les::change}}" required>
         <option value="" hidden>les</option>
         <template is="dom-repeat" items="{{c_rooster}}">
-          <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]]">{{item.vakCode}} ({{item.datum}})</option>
+          <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]].[[item.klasCode]]">{{item.vakCode}} ({{item.datum}})</option>
         </template>
       </select>
       <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
@@ -212,7 +212,7 @@ tbody{
           this.leerlingen = this.les.leerlingen;
         },
         
-        _ziek_melden(){
+        _ziek_melden: function() {
           alert("ziek melden");
         }
       });
