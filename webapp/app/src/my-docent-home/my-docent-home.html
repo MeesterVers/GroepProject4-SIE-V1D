@@ -1,7 +1,34 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="my-docent-home">
+<dom-module id="my-docent-home" items="{{c_rooster}}">
   <template>
+    <iron-ajax
+            id="leerlingen_ophalen"
+            method="POST"
+            url="/docent/presentie/ophalen"
+            on-response="_leerlingen_ophalen_response_handler">
+    </iron-ajax>
+
+    <iron-ajax
+            id="leerlingen_verzenden"
+            method="POST"
+            url="/docent/presentie/opslaan"
+            on-response="_leerlingen_verzenden_response_handler">
+    </iron-ajax>
+
+    <iron-ajax
+            id="rooster_ophalen"
+            method="POST"
+            url="/student/rooster"
+            handle-as="json"
+            on-response="_rooster_ophalen_response_handler">
+    </iron-ajax>
     <style>
     :root {
       --paper-input-container-focus-color: #1a9fd9;
@@ -9,23 +36,90 @@
     :host {
       display: block;
     }
+
+    input[type=text],
+    input[type=date],
+    input[type=datetime],
+    input[type=number],
+    input[type=search],
+    input[type=time],
+    input[type=url],
+    input[type=email],
+    textarea,
+    select{
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      border:1px solid #BEBEBE;
+      padding: 7px;
+      outline: none;
+    }
+
+    input[type=button] {
+      background: #1a9fd9;
+      padding: 8px 15px 8px 15px;
+      border: none;
+      color: #fff;
+      transition: 0.2s;
+    }
+
+    input[type=button]:hover {
+      background: #1786b7;
+      transition: 0.2s;
+    }
+
+    select, input, textarea {
+      width: 250px;
+      margin: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
   </style>
-  <div class="card">
-    <p>Docent</p>
-    <p>[[_rol]]</p>
-  </div>
+    <h1>Dag Rooster</h1>
+
+    <table>
+      <tr>
+        <th>Klas</th>
+        <th>Lokaal</th>
+        <th>Vak</th>
+        <th>Datum</th>
+      </tr>
+      <tr>
+        <th value="[[item.vakCode]]">{{item.vakCode}}</th>
+
+        <th>Lokaal</th>
+        <th>Vak</th>
+        <th>Datum</th>
+      </tr>
+
+    </table>
+
 </template>
 
 <script>
   (function() {
     'use strict';
-    
+
     Polymer({
       is: 'my-docent-home',
 
       properties: {
         _c_studenten: {
-          type: Array,           
+          type: Array,
         },
 
         c_rol: {
@@ -34,11 +128,11 @@
         c_username: {
           type: String,
         },
-        
+
         c_visible: {
-          type: Boolean,                                     
+          type: Boolean,
           value: false,
-          observer: '_initializing',                          
+          observer: '_initializing',
         },
       },
 
@@ -49,6 +143,57 @@
           }
         }
       },
+
+        _rooster_ophalen_request_handler: function() {
+            if (this.c_visible) {
+                if (this.c_rol=="docent") {
+                    this.$.rooster_ophalen.contentType="application/json";
+                    this.$.rooster_ophalen.body={
+                        "username": this.c_username
+                    };
+                    this.$.rooster_ophalen.generateRequest();
+                }
+            }
+        },
+        _rooster_ophalen_response_handler: function(request) {
+            this.c_rooster = request.detail.response;
+        },
+
+        _submitHandler: function() {
+            this.$.leerlingen_ophalen.contentType="application/json";
+            this.$.leerlingen_ophalen.body={
+                "les": this.les,
+                "username": this.c_username
+            };
+            this.$.leerlingen_ophalen.generateRequest();
+        },
+
+        _leerlingen_ophalen_response_handler: function(request) {
+            this.les = request.detail.response[0];
+            this.leerlingen = this.les.leerlingen;
+        },
+
+        _statusChangeHandler: function() {
+            if (this.presentie.length > 0) { this.presentie = []; }
+            var statuses = Polymer.dom(this.root).querySelectorAll(".aanwezigheid")
+            for (var item of statuses) {
+                // console.log(item.id + ": " + item.value);
+                var obj = {};
+                obj["naam"] = item.id.split(".")[0];
+                obj["id"] = item.id.split(".")[1];
+                obj["status"] = item.value;
+                this.push('presentie', obj);
+            }
+            this.$.leerlingen_verzenden.contentType="application/json";
+            this.$.leerlingen_verzenden.body={
+                "leerlingen": this.presentie,
+                "datum": this.les.datum,
+                "vakCode": this.les.vakCode,
+                "startTijd": this.les.startTijd,
+                "klasCode": this.les.klasCode
+            };
+            this.$.leerlingen_verzenden.generateRequest();
+        }
 
     });
   })();
