@@ -80,6 +80,18 @@
                 margin-top: 30px;
             }
 
+            .1 {
+            color: green;
+            }
+
+            .2 {
+            color: orange;
+            }
+
+            .3 {
+            color: red;
+            }
+
             td, th {
                 border: 1px solid #dddddd;
                 text-align: left;
@@ -102,7 +114,6 @@
             <tr>
                 <th>Student</th>
                 <th>Aanwezigheid</th>
-                <th>Perecentage aanwezig</th>
                 <th>Status</th>
             </tr>
             <template is="dom-repeat" items="{{leerlingen}}">
@@ -115,8 +126,7 @@
                         <option value="afwezig">afwezig</option>
                     </select>
                 </td>
-                <td>[[item.percentage]]</td>
-                <td>[[item.soort]]</td>
+                <td id="soort">[[item.soort]]</td>
             </tr>
             </template>
         </table>
@@ -188,6 +198,13 @@
                 _leerlingen_ophalen_response_handler: function(request) {
                     this.les = request.detail.response[0];
                     this.leerlingen = this.les.leerlingen;
+                    // var soorten = Polymer.dom(this.root).querySelectorAll("#soort");
+                    // for (var soort of soorten) {
+                    //     console.log(soort.innerHTML);
+                    //     if (soort.innerHTML == "aanwezig") {
+                    //         soort.classList.add("1");
+                    //     }
+                    // }
                 },
 
                 _statusChangeHandler: function() {

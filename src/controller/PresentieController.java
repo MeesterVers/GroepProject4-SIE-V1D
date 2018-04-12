@@ -79,7 +79,7 @@ public class PresentieController implements Handler {
                             .add("soort", "aanwezig");
                     for (Afwezigheid afw : l.getAfwezigheden()) {
                         if (afw.getStudent().getGebruikersnaam().equals(std.getGebruikersnaam())) {
-                            System.out.println(afw.getSoort());
+                            //System.out.println(afw.getSoort());
                             lJsonObjectBuilderStudent
                             .add("soort", afw.getSoort())
                             .add("startDatum", afw.getStartDatum())
@@ -99,7 +99,7 @@ public class PresentieController implements Handler {
 
                             //System.out.println(les_datum + " " + afw_start_datum + " " + afw_eind_datum);
                             if (afw_start_datum.compareTo(les_datum) * les_datum.compareTo(afw_eind_datum) >= 0 || afw.getBeschrijving().equals("ziekte")) {
-                                System.out.println("true");
+                                //System.out.println("true");
                                 lJsonObjectBuilderStudent
                                     .add("soort", afw.getSoort())
                                     .add("startDatum", afw.getStartDatum())
