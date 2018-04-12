@@ -27,6 +27,13 @@ handle-as="json"
 on-response="_rooster_ophalen_response_handler">
 </iron-ajax>
 
+<iron-ajax
+id="afwezigheid_ophalen"
+method="POST"
+url="/student/afwezigheid"
+handle-as="json"
+on-response="_afwezigheid_response_handler">
+</iron-ajax>
 
 <style>
 :root {
@@ -109,41 +116,62 @@ tbody{
 <div class="card">
   <div class="col-half">
     <div class="content">
-
-    </div>
-  </div>
-
-  <div class="col-half">
-    <div class="content">
-     <paper-button class="ziek-button" on-click="_ziek_melden" raised> Ik ben ziek</paper-button>
-     <div class="medestudenten">
+      <h3>Aantal keer afwezig: [[aantalAfwezigheid]]</h3>
       <hr>
-      <h3>Medestudenten</h3>
+      <div class="afwezigheid">
+       <h3>Afwezigheid</h3>
 
-      <select name="les" value="{{les::change}}" required>
-        <option value="" hidden>les</option>
-        <template is="dom-repeat" items="{{c_rooster}}">
-          <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]].[[item.klasCode]]">{{item.vakCode}} ({{item.datum}})</option>
-        </template>
-      </select>
-      <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
-
-      <table style="margin-top: 30px;">
+       <table style="margin-top: 30px;">
         <tr>
-          <th>Naam</th>
-          <th>Aanwezigheid</th>
+          <th>Melding</th>
+          <th>Datum</th>
+          <th>Beschrijving</th>
         </tr>
-        <tbody class="studenten_container">
-          <template is="dom-repeat" items="{{leerlingen}}">
+        <tbody class="afwezigheid_container">
+          <template is="dom-repeat" items="{{afwezigheid}}">
             <tr>
-              <td>[[item.naam]]</td>
               <td>[[item.soort]]</td>
+              <td>[[item.startDatum]]/[[item.eindDatum]]</td>
+              <td>[[item.beschrijving]]</td>
             </tr>
-          </tbody>
-        </template>
+          </template>
+        </tbody>
       </table>
     </div>
   </div>
+</div>
+
+<div class="col-half">
+  <div class="content">
+   <paper-button class="ziek-button" on-click="_ziek_melden" raised> Ik ben ziek</paper-button>
+   <hr>
+   <div class="medestudenten">
+    <h3>Medestudenten</h3>
+
+    <select name="les" value="{{les::change}}" required>
+      <option value="" hidden>les</option>
+      <template is="dom-repeat" items="{{c_rooster}}">
+        <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]].[[item.klasCode]]">{{item.vakCode}} ({{item.datum}})</option>
+      </template>
+    </select>
+    <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
+
+    <table style="margin-top: 30px;">
+      <tr>
+        <th>Naam</th>
+        <th>Aanwezigheid</th>
+      </tr>
+      <tbody class="studenten_container">
+        <template is="dom-repeat" items="{{leerlingen}}">
+          <tr>
+            <td>[[item.naam]]</td>
+            <td>[[item.soort]]</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div>
 </div>
 </template>
@@ -157,6 +185,10 @@ tbody{
 
       properties: {
         leerlingen: {
+          type: Array,           
+        },
+
+        afwezigheid: {
           type: Array,           
         },
 
@@ -185,6 +217,10 @@ tbody{
           type: String,
         },
 
+        aantalAfwezigheid: {
+          type: String,
+        },
+
         c_visible: {
           type: Boolean,                                     
           value: false,
@@ -195,14 +231,20 @@ tbody{
       _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
             if (this.c_rol=="student") {                        // voor studenten
-              this.$.rooster_ophalen.contentType="application/json";
-              this.$.rooster_ophalen.body={
-                "les": this.les,
-                "username": this.c_username
-              };
-              this.$.rooster_ophalen.generateRequest();
+              this.afwezigheid_ophalen();
+              this._rooster_ophalen();
             }
           }
+        },
+
+        _rooster_ophalen: function() {
+          this.$.rooster_ophalen.contentType="application/json";
+          this.$.rooster_ophalen.body={
+            "les": this.les,
+            "username": this.c_username
+          };
+          this.$.rooster_ophalen.generateRequest();
+          console.log("op gehaald");
         },
 
         _rooster_ophalen_response_handler: function(request) {
@@ -244,10 +286,23 @@ tbody{
           this.$.leerling_ziekmelden.generateRequest();
         },
 
-        _leerling_status_update(){
+        _leerling_status_update: function(){
          alert("Ziek gemeld");
-        }
-      });
+       },
+
+       afwezigheid_ophalen: function() {
+        this.$.afwezigheid_ophalen.contentType="application/json";
+        this.$.afwezigheid_ophalen.body={
+          "username": this.c_username
+        };
+        this.$.afwezigheid_ophalen.generateRequest();
+      },
+
+      _afwezigheid_response_handler : function(request){
+        this.afwezigheid = request.detail.response;
+        this.aantalAfwezigheid = this.afwezigheid.length;
+      }
+    });
   })();
 </script>
 </dom-module>
