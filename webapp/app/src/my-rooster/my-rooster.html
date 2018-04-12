@@ -47,36 +47,55 @@
 
 
     <div id="modum">
+        <paper-button id="close"on-tap="close">close</paper-button>
         <h1 id="dagnaam"></h1>
-        <h1 id="vakcode"></h1>
-        <h1 id="lokaal"></h1>
-        <h2 id="docent"></h2>
-        <h2 id="klas"></h2>
         <h3 id="datum"></h3>
         <h3 id="starttijd"></h3>
         <h3 id="eindtijd"></h3>
-
+        <h2 id="vakcode"></h2>
+        <h2 id="lokaal"></h2>
+        <h2 id="docent"></h2>
+        <h2 id="klas"></h2>
     </div>
 
         <style>
+        h1#dagnaam{
+        margin-bottom: 0px;
+        }
+
         .roosterdag{
             float:left;
             width: 20%;
+            text-align:center;
 
         }
-        .roosterles{
+        .roosterdag h2{
+            border:1px solid black;
+            border-left: unset;
+            margin-bottom:unset;
+        }
+        .roosterles div{
             cursor:pointer;
+            border:1px solid black;
+            border-left:unset;
+            border-top:unset;
         }
         #modum{
             position:fixed;
-            right: 5%;
+            right: 30%;
             left: 30%;
-            top: 5%;
-            bottom: 5%;
+            top: 19%;
+            bottom: 19%;
             background-color:white;
             border: solid black 1px;
             border-radius:10px;
             display:none;
+            text-align:center;
+        }
+        #close {
+            position: fixed;
+            top: 21%;
+            right: 30%;
         }
         </style>
     </template>
@@ -184,7 +203,7 @@
                   var docent = e.model.item.docent;
                   var klas = e.model.item.klasCode;
                   var lokaal = e.model.item.lokaal;
-                  alert(datum+starttijd+vakcode+docent);
+                  var dagnaam = e.model.item.dagNaam
                   var modum = Polymer.dom(this.root).querySelector("#modum");
                   modum.style.display = 'block';
                   Polymer.dom(this.root).querySelector("#datum").innerHTML = datum;
@@ -194,8 +213,14 @@
                   Polymer.dom(this.root).querySelector("#docent").innerHTML = docent;
                   Polymer.dom(this.root).querySelector("#klas").innerHTML = klas;
                   Polymer.dom(this.root).querySelector("#lokaal").innerHTML = lokaal;
+                  Polymer.dom(this.root).querySelector("#dagnaam").innerHTML = dagnaam;
 
 
+                },
+                close:function(){
+
+                 var modum = Polymer.dom(this.root).querySelector("#modum");
+                  modum.style.display = 'none';
                 }
             });
         })();
