@@ -79,6 +79,7 @@ public class PresentieController implements Handler {
                             .add("soort", "aanwezig");
                     for (Afwezigheid afw : l.getAfwezigheden()) {
                         if (afw.getStudent().getGebruikersnaam().equals(std.getGebruikersnaam())) {
+                            System.out.println(afw.getSoort());
                             lJsonObjectBuilderStudent
                             .add("soort", afw.getSoort())
                             .add("startDatum", afw.getStartDatum())
@@ -89,14 +90,14 @@ public class PresentieController implements Handler {
 
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     Date les_datum = format.parse(datum);
-                    System.out.println(les_datum);
+                    //System.out.println(les_datum);
 
                     for (Afwezigheid afw : informatieSysteem.getPeriodeAfwezigheden()) {
                         if (afw.getStudent().getGebruikersnaam().equals(std.getGebruikersnaam())) {
                             Date afw_start_datum = format.parse(afw.getStartDatum());
                             Date afw_eind_datum = format.parse(afw.getEindDatum());
 
-                            System.out.println(les_datum + " " + afw_start_datum + " " + afw_eind_datum);
+                            //System.out.println(les_datum + " " + afw_start_datum + " " + afw_eind_datum);
                             if (afw_start_datum.compareTo(les_datum) * les_datum.compareTo(afw_eind_datum) >= 0) {
                                 System.out.println("true");
                                 lJsonObjectBuilderStudent

@@ -44,7 +44,14 @@ public class AfmeldenController implements Handler {
         Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
 
         String soort = lJsonObjectIn.getString("soort");
-        String afwezigheidLes = lJsonObjectIn.getString("les");
+
+        String afwezigheidLes;
+
+        if (lJsonObjectIn.get("les") == null) {
+            afwezigheidLes = "";
+        } else {
+            afwezigheidLes = lJsonObjectIn.getString("les");
+        }
 
         String beschrijving = "";
         String startDatum;
@@ -67,7 +74,7 @@ public class AfmeldenController implements Handler {
             
         }
 
-        if(soort.equals("Te laat")){
+        else if(soort.equals("Te laat") || soort.equals("Ziek")){
             beschrijving = lJsonObjectIn.getString("beschrijving");
             String[] parts = afwezigheidLes.split("\\.");
             vakCode = parts[0];
