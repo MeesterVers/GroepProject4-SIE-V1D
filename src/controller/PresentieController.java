@@ -98,7 +98,7 @@ public class PresentieController implements Handler {
                             Date afw_eind_datum = format.parse(afw.getEindDatum());
 
                             //System.out.println(les_datum + " " + afw_start_datum + " " + afw_eind_datum);
-                            if (afw_start_datum.compareTo(les_datum) * les_datum.compareTo(afw_eind_datum) >= 0) {
+                            if (afw_start_datum.compareTo(les_datum) * les_datum.compareTo(afw_eind_datum) >= 0 || afw.getBeschrijving().equals("ziekte")) {
                                 System.out.println("true");
                                 lJsonObjectBuilderStudent
                                     .add("soort", afw.getSoort())

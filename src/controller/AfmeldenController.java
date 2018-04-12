@@ -68,8 +68,10 @@ public class AfmeldenController implements Handler {
         }
 
         if(soort.equals("Ziek") && afwezigheidLes.equals("allemaal")){
+            System.out.println("here");
             startDatum = lJsonObjectIn.getString("startDatum");
             eindDatum = lJsonObjectIn.getString("eindDatum");
+            beschrijving = "ziekte";
             informatieSysteem.voegPeriodeAfwezigheidToe(new Afwezigheid(soort, startDatum, eindDatum, beschrijving, lStudentZelf, ""));
             
         }
