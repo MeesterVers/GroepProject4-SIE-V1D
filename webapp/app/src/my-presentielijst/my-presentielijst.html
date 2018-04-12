@@ -94,7 +94,7 @@
         <select name="les" value="{{les::change}}" required>
             <option value="" hidden>les</option>
             <template is="dom-repeat" items="{{c_rooster}}">
-                <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]]">{{item.vakCode}} ({{item.datum}})</option>
+                <option value="[[item.vakCode]].[[item.datum]].[[item.startTijd]]">{{item.vakCode}} ({{item.datum}}) ({{item.klasCode}})</option>
             </template>
         </select>
         <paper-button type="submit" on-click="_submitHandler">Bevestig</paper-button>
